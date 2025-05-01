@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
+import ParticlesBackground from "@/components/tsparticles";
+import Topbar from "@/components/layout/Topbar";
+import Sidebar from "@/components/layout/Sidebar";
 
 const interSans = Inter({
   variable: "--font-inter-sans",
@@ -25,14 +28,34 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${interSans.variable} antialiased `}>
+      <body className={`${interSans.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <div className="h-screen flex items-center justify-center p-4 sm:p-6 md:p-10 bg-[linear-gradient(180deg,_#6995e9_0%,_#ffffff_100%)] dark:bg-[linear-gradient(180deg,_#141621_0%,_#0e0c11_100%)]">
+            <div
+              className="
+          relative h-full w-full rounded-2xl p-4 sm:p-6 md:p-8
+          backdrop-blur-2xl
+          bg-white/30 dark:bg-black/30
+          shadow-[0_0_60px_-30px_rgba(43,152,196,0.466)]
+          dark:shadow-[0_0_60px_-30px_rgba(0,200,255,0.3)]
+          overflow-hidden
+        "
+            >
+              <div className="absolute -top-[10px] left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full bg-cyan-400/20 blur-[200px] pointer-events-none z-0" />
+              <div className="absolute top-[-40px] left-1/2 -translate-x-1/2 w-[240px] h-[240px] rounded-full border border-cyan-400/10 opacity-20 z-0" />
+              <ParticlesBackground />
+              <Topbar />
+              <div className="relative">
+                <Sidebar />
+              </div>
+              {children}
+            </div>
+          </div>
         </ThemeProvider>
       </body>
     </html>

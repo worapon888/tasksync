@@ -7,12 +7,14 @@ export default function Topbar() {
     <nav className="w-full px-6 py-4 flex items-center justify-between z-10">
       <div className="flex items-center space-x-2  text-lg">
         <div>
-          <Image
-            src="/logo_tasksync_light.png"
-            width={180}
-            height={180}
-            alt="logo"
-          />
+          <Link href="/">
+            <Image
+              src="/logo_tasksync_light.png"
+              width={180}
+              height={180}
+              alt="logo"
+            />
+          </Link>
         </div>
       </div>
 

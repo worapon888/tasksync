@@ -18,11 +18,11 @@ export default function Topbar() {
         </div>
       </div>
 
-      <div className="flex items-center space-x-6 font-medium  text-white text-lg">
-        <Link href="#" className="hover:underline">
+      <div className="flex items-center space-x-6 font-medium  text-white ttext-lg">
+        <Link href="/about-us" className="hover:underline">
           About Us
         </Link>
-        <Link href="#" className="hover:underline">
+        <Link href="/how-it-works" className="hover:underline">
           How it works
         </Link>
         <ModeToggle />

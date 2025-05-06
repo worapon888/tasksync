@@ -8,12 +8,14 @@ export default function EmotionalMeter() {
   const [range, setRange] = useState("weekly");
 
   return (
-    <div className="bg-[#181b2b] rounded-xl p-8 w-full min-h-[620px] flex flex-col justify-between">
+    <div className="dark:bg-black/60 bg-white/80 rounded-xl p-8 w-full min-h-[620px] flex flex-col justify-between ">
       {/* Header */}
       <div className="flex justify-between items-start gap-4">
         <div>
-          <h3 className="text-white text-xl font-semibold">Emotional Meter</h3>
-          <p className="text-sm text-gray-400 mt-1">
+          <h3 className="text-slate-500 text-xl font-semibold">
+            Emotional Meter
+          </h3>
+          <p className="text-sm text-slate-400 mt-1">
             &quot;Track your inner momentum over time.&quot;
           </p>
         </div>
@@ -21,7 +23,7 @@ export default function EmotionalMeter() {
           <select
             value={range}
             onChange={(e) => setRange(e.target.value)}
-            className="bg-[#242739] text-white px-4 py-1.5 rounded-lg text-sm appearance-none pr-8"
+            className="dark:bg-[#242739]/60 border bg-white/80 text-blue-400  border-white/10 dark:text-white px-4 py-1.5 rounded-lg text-sm appearance-none pr-8"
           >
             <option value="daily">daily</option>
             <option value="weekly">weekly</option>
@@ -52,13 +54,13 @@ export default function EmotionalMeter() {
 
       {/* Energy State */}
       <div className="text-center mt-4">
-        <p className="text-sm text-gray-400">Emotional</p>
+        <p className="text-sm text-slate-400">Emotional</p>
         <h4 className="text-lg font-bold text-green-400">High Energy</h4>
       </div>
 
       {/* Action Button */}
       <div className="mt-6 flex justify-center">
-        <button className="bg-white/10 hover:bg-white/20 text-white text-sm px-6 py-2 rounded-lg flex items-center gap-2">
+        <button className="bg-white/10 hover:bg-white/20 text-slate-500 text-sm px-6 py-2 rounded-lg flex items-center gap-2">
           Ready to take a break?
           <div className="bg-cyan-400 text-black p-1 rounded-md">
             <FaRegSmileBeam size={16} />

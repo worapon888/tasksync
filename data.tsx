@@ -66,3 +66,40 @@ export const features = [
     icon: <HeartPlus />,
   },
 ];
+
+export const days = [
+  { name: "Sun", date: 21, energyLevel: "Low Energy", value: 20 },
+  { name: "Mon", date: 22, energyLevel: "High Energy", value: 80 },
+  { name: "Tue", date: 23, energyLevel: "Medium Energy", value: 50 },
+  { name: "Wed", date: 24, energyLevel: "Low Energy", value: 30 },
+  { name: "Thu", date: 25, energyLevel: "High Energy", value: 90 },
+  { name: "Fri", date: 26, energyLevel: "Medium Energy", value: 60 },
+  { name: "Sat", date: 27, energyLevel: "Low Energy", value: 10 },
+];
+
+export const hours = [
+  "6 AM",
+  "7 AM",
+  "8 AM",
+  "9 AM",
+  "10 AM",
+  "11 AM",
+  "12 AM",
+  "1 PM",
+  "2 PM",
+  // "3 PM",
+  // "4 PM",
+  // "5 PM",
+  // "6 PM",
+  // "7 PM",
+  // "8 PM",
+  // "9 PM",
+  // "10 PM",
+  // "11 PM",
+  // "12 PM",
+  // "1 PM",
+  // "2 PM",
+  // "3 PM",
+  // "4 PM",
+  // "5 PM",
+];

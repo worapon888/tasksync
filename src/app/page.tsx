@@ -4,12 +4,14 @@ export default function Home() {
   return (
     <>
       {/* Content */}
-      <div className="relative z-10 ml-0 md:ml-24 mt-16 md:mt-20 flex flex-col items-center">
-        <h2 className="text-xl md:text-2xl mb-2 text-white">Hello, Sir!</h2>
+      <div className="relative z-10 ml-0 md:ml-24 mt-16 md:mt-20 flex flex-col items-center min-h-screen overflow-y-auto ">
+        <h2 className="text-xl md:text-2xl mb-2 dark:text-white  text-blue-400">
+          Hello, Sir!
+        </h2>
         <h1
           className="
               text-3xl md:text-5xl font-semibold leading-snug text-center
-              bg-gradient-to-r from-cyan-300 to-white
+              bg-gradient-to-r from-blue-500 to-amber-300
               dark:from-[#444444] dark:to-white
               bg-clip-text text-transparent tracking-tight
             "
@@ -33,18 +35,22 @@ export default function Home() {
                 key={i}
                 className={`
                     relative rounded-xl p-6 md:p-10
-                    bg-gradient-to-b from-white/70 to-white/50
-                    dark:from-gray-800 dark:to-gray-700/70
+                    bg-gradient-to-b 
+                     bg-white/80 dark:bg-black/60
                     border border-white/10
-                    dark:text-white/90 text-gray-400/90 hover:text-gray-400 dark:hover:text-white
+                   text-white/90  hover:text-gray-400 dark:hover:text-white
                     backdrop-blur-md transition-all duration-300
                     hover:scale-[1.02] cursor-pointer
                     ${hoverGlow}
                   `}
               >
                 <div className="flex flex-row items-center gap-4">
-                  <div className="text-2xl mb-2 text-cyan-400">{item.icon}</div>
-                  <div className="font-semibold text-lg">{item.title}</div>
+                  <div className="text-2xl mb-2 text-slate-500 dark:text-cyan-400">
+                    {item.icon}
+                  </div>
+                  <div className="font-semibold text-lg dark:text-white text-slate-500">
+                    {item.title}
+                  </div>
                 </div>
                 <div className="text-sm dark:text-white/60 text-gray-400 mt-1">
                   {item.subtitle}

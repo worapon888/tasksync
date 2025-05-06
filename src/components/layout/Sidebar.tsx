@@ -13,6 +13,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { useSession, signOut } from "next-auth/react";
+import Image from "next/image";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -41,11 +42,20 @@ export default function Sidebar() {
 
       {user ? (
         <div className="flex flex-col items-center space-y-10">
-          <div title={user.email || user.name || "Profile"}>
-            <UserCircle className="w-8 h-8 text-cyan-400" />
-          </div>
+          {user.image ? (
+            <Image
+              src={user.image}
+              alt="Avatar"
+              width={64} // ✅ ใหญ่ขึ้น
+              height={64}
+              className="rounded-full border border-cyan-400"
+              title={user.email || ""}
+            />
+          ) : (
+            <UserCircle className="w-10 h-10 text-cyan-400" />
+          )}
           <LogOut
-            onClick={() => signOut({ callbackUrl: "/login" })}
+            onClick={() => signOut()}
             className="w-7 h-7 dark:text-gray-400 text-red-400 hover:text-red-500 transition cursor-pointer"
           />
         </div>

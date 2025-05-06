@@ -10,9 +10,11 @@ export default function Topbar() {
           <Link href="/">
             <Image
               src="/logo_tasksync_light.png"
-              width={180}
-              height={180}
-              alt="logo"
+              alt="TaskSync Logo"
+              width={120}
+              height={40}
+              style={{ height: "auto" }}
+              priority
             />
           </Link>
         </div>

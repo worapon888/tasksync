@@ -34,8 +34,9 @@ export default function RegisterPage() {
         password: form.password,
         callbackUrl: "/dashboard",
       });
-    } catch (err: any) {
-      setError(err.message || "Something went wrong");
+    } catch (err) {
+      const error = err as Error;
+      setError(error.message);
     }
   };
 
@@ -44,20 +45,20 @@ export default function RegisterPage() {
       <main className="flex-grow flex items-center justify-center px-4 sm:px-6">
         <form
           onSubmit={handleRegister}
-          className="bg-white w-full max-w-md sm:rounded-2xl sm:shadow-md px-6 py-12 sm:p-16 space-y-8"
+          className="bg-white dark:bg-black/40 w-full max-w-md sm:rounded-2xl sm:shadow-md px-6 py-12 sm:p-16 space-y-8"
         >
           <div className="space-y-1">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
               Create your account
             </h1>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-slate-400">
               Register to start using TaskSync
             </p>
           </div>
 
           <div className="space-y-4">
             <div className="relative">
-              <label className="absolute -top-2 left-3 text-xs px-1 bg-white text-gray-500">
+              <label className="absolute -top-2 left-3 text-xs px-1 bg-white dark:bg-black text-gray-500">
                 Name
               </label>
               <input
@@ -65,7 +66,7 @@ export default function RegisterPage() {
                 name="name"
                 value={form.name}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full border dark:border-slate-500 border-gray-300 rounded-lg px-4 py-3 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-black"
                 placeholder="Your name"
                 required
               />
@@ -73,7 +74,7 @@ export default function RegisterPage() {
             </div>
 
             <div className="relative">
-              <label className="absolute -top-2 left-3 text-xs px-1 bg-white text-gray-500">
+              <label className="absolute -top-2 left-3 text-xs px-1 bg-white dark:bg-black text-gray-500">
                 Email
               </label>
               <input
@@ -81,7 +82,7 @@ export default function RegisterPage() {
                 name="email"
                 value={form.email}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full border dark:border-slate-500 border-gray-300 rounded-lg px-4 py-3 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-black"
                 placeholder="you@example.com"
                 required
               />
@@ -89,7 +90,7 @@ export default function RegisterPage() {
             </div>
 
             <div className="relative">
-              <label className="absolute -top-2 left-3 text-xs px-1 bg-white text-gray-500">
+              <label className="absolute -top-2 left-3 text-xs px-1 bg-white dark:bg-black text-gray-500">
                 Password
               </label>
               <input
@@ -97,7 +98,7 @@ export default function RegisterPage() {
                 name="password"
                 value={form.password}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full border dark:border-slate-500 border-gray-300 rounded-lg px-4 py-3 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-black"
                 placeholder="••••••••"
                 required
               />
@@ -109,15 +110,15 @@ export default function RegisterPage() {
 
           <button
             type="submit"
-            className="w-full bg-black text-white py-3 rounded-lg font-medium hover:opacity-90 transition cursor-pointer"
+            className="w-full bg-black dark:bg-slate-600 text-white py-3 rounded-lg font-medium hover:opacity-90 transition cursor-pointer"
           >
             Create Account
           </button>
 
           <div className="flex items-center gap-4 text-sm text-gray-400">
-            <div className="flex-1 h-px bg-gray-300" />
+            <div className="flex-1 h-px bg-gray-300 dark:bg-slate-600" />
             or
-            <div className="flex-1 h-px bg-gray-300" />
+            <div className="flex-1 h-px bg-gray-300 dark:bg-slate-600" />
           </div>
 
           <button

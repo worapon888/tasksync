@@ -46,8 +46,8 @@ export default function Sidebar() {
             <Image
               src={user.image}
               alt="Avatar"
-              width={64} // ✅ ใหญ่ขึ้น
-              height={64}
+              width={48} // ✅ ใหญ่ขึ้น
+              height={48}
               className="rounded-full border border-cyan-400"
               title={user.email || ""}
             />

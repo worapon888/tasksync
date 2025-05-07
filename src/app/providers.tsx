@@ -3,6 +3,7 @@
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SnackProvider } from "@/context/SnackProvider";
+import { TaskModeProvider } from "@/context/TaskModeContext";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -14,7 +15,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <TaskModeProvider>{children}</TaskModeProvider>
         </ThemeProvider>
       </SnackProvider>
     </SessionProvider>

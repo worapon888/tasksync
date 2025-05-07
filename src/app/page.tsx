@@ -1,6 +1,15 @@
+"use client";
 import { features } from "../../data";
+import { useTaskMode } from "@/context/TaskModeContext";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const { setMode } = useTaskMode();
+  const router = useRouter();
+
+  function normalizeTitleToEnum(title: string) {
+    return title.replace(/\s+/g, "").replace("&", "And"); // Leisure & Balance → LeisureAndBalance (กรณีคุณใช้แบบนี้)
+  }
   return (
     <>
       {/* Content */}
@@ -33,6 +42,11 @@ export default function Home() {
             return (
               <div
                 key={i}
+                onClick={() => {
+                  const modeEnum = normalizeTitleToEnum(item.title);
+                  setMode(modeEnum); // ✅ ส่งค่าแบบ enum จริง
+                  router.push("/dashboard/board");
+                }}
                 className={`
                     relative rounded-xl p-6 md:p-10
                     bg-gradient-to-b 
@@ -41,7 +55,7 @@ export default function Home() {
                    text-white/90  hover:text-gray-400 dark:hover:text-white
                     backdrop-blur-md transition-all duration-300
                     hover:scale-[1.02] cursor-pointer
-                    ${hoverGlow}
+                    ${hoverGlow} 
                   `}
               >
                 <div className="flex flex-row items-center gap-4">

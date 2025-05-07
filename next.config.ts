@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
       "i.pravatar.cc",
       "img.icons8.com",
       "lh3.googleusercontent.com",
+      "res.cloudinary.com",
     ],
   },
 };

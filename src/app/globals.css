@@ -14,7 +14,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #00000
+    --background: #000000;
     --foreground: #ededed;
   }
 }
@@ -43,8 +43,8 @@ body {
   }
   /* Hide scrollbar for IE, Edge and Firefox */
   .no-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 }
 
@@ -53,5 +53,5 @@ select {
   -moz-appearance: none;
   appearance: none;
   text-indent: 1px;
-  text-overflow: '';
+  text-overflow: "";
 }

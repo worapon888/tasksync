@@ -77,6 +77,61 @@ export const days = [
   { name: "Sat", date: 27, energyLevel: "Low Energy", value: 10 },
 ];
 
+export const mockTasks = {
+  todo: [
+    {
+      title: "Make a new post",
+      date: "21/06/2025",
+      description: "Lorem ipsum is simply dummy text of the printing...",
+      cover: "/board/board_img1.avif",
+    },
+    {
+      title: "Make a prototype website",
+      date: "25/06/2025",
+      description: "Lorem ipsum is simply dummy text...",
+    },
+  ],
+  doing: [
+    {
+      title: "Check design materials",
+      date: "21/06/2025",
+      description: "Lorem ipsum is simply dummy text of the printing...",
+      cover:
+        "https://images.unsplash.com/photo-1649371176738-dfc088e7a037?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
+  ],
+  review: [
+    {
+      title: "Discuss year budgets",
+      date: "05/12/2024",
+      description: "Lorem ipsum is simply dummy text...",
+    },
+    {
+      title: "Content plans",
+      date: "21/06/2025",
+      description: "Lorem ipsum is simply dummy text...",
+      cover: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2",
+    },
+  ],
+  done: [
+    {
+      title: "Weekly planning meeting",
+      date: "05/12/2024",
+      description: "Lorem ipsum is simply dummy text...",
+    },
+    {
+      title: "Discuss a new concept",
+      date: "05/12/2024",
+      description: "Lorem ipsum is simply dummy text...",
+    },
+    {
+      title: "Discuss monthly budgets",
+      date: "05/12/2024",
+      description: "Lorem ipsum is simply dummy text...",
+    },
+  ],
+};
+
 export const hours = [
   "6 AM",
   "7 AM",
@@ -102,4 +157,11 @@ export const hours = [
   // "3 PM",
   // "4 PM",
   // "5 PM",
+];
+
+export const columns = [
+  { id: "todo", title: "To do", color: "bg-pink-500" },
+  { id: "doing", title: "Doing", color: "bg-orange-400" },
+  { id: "review", title: "Under Review", color: "bg-cyan-400" },
+  { id: "done", title: "Done", color: "bg-green-400" },
 ];

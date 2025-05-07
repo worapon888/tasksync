@@ -134,11 +134,13 @@ exports.Prisma.TaskScalarFieldEnum = {
   title: 'title',
   description: 'description',
   dueDate: 'dueDate',
-  status: 'status',
-  priority: 'priority',
+  cover: 'cover',
   userId: 'userId',
+  mode: 'mode',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  status: 'status',
+  priority: 'priority'
 };
 
 exports.Prisma.AccountScalarFieldEnum = {
@@ -183,7 +185,30 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.TaskMode = exports.$Enums.TaskMode = {
+  PersonalAssistant: 'PersonalAssistant',
+  CareerTransition: 'CareerTransition',
+  FinancialPlanner: 'FinancialPlanner',
+  BusinessLaunchpad: 'BusinessLaunchpad',
+  SocialGrowth: 'SocialGrowth',
+  PersonalDevelopment: 'PersonalDevelopment',
+  HealthJourney: 'HealthJourney',
+  LeisureBalance: 'LeisureBalance',
+  MindfulLiving: 'MindfulLiving'
+};
 
+exports.TaskStatus = exports.$Enums.TaskStatus = {
+  TODO: 'TODO',
+  DOING: 'DOING',
+  REVIEW: 'REVIEW',
+  DONE: 'DONE'
+};
+
+exports.TaskPriority = exports.$Enums.TaskPriority = {
+  low: 'low',
+  medium: 'medium',
+  high: 'high'
+};
 
 exports.Prisma.ModelName = {
   User: 'User',

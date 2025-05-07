@@ -32,12 +32,29 @@ model Task {
   title       String
   description String?
   dueDate     DateTime?
-  status      String // todo | in_progress | done
-  priority    String // low | medium | high
-  userId      String
-  user        User      @relation("UserTasks", fields: [userId], references: [id])
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  cover       String?
+
+  userId String
+  user   User   @relation("UserTasks", fields: [userId], references: [id])
+
+  mode      TaskMode     @default(PersonalAssistant)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  status    TaskStatus   @default(TODO)
+  priority  TaskPriority @default(medium)
+}
+
+enum TaskStatus {
+  TODO
+  DOING
+  REVIEW
+  DONE
+}
+
+enum TaskPriority {
+  low
+  medium
+  high
 }
 
 model Account {
@@ -73,4 +90,16 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+enum TaskMode {
+  PersonalAssistant
+  CareerTransition
+  FinancialPlanner
+  BusinessLaunchpad
+  SocialGrowth
+  PersonalDevelopment
+  HealthJourney
+  LeisureBalance
+  MindfulLiving
 }

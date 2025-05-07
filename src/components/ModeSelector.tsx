@@ -19,7 +19,10 @@ export default function ModeSelector() {
         ))}
       </select>
       <h1 className="text-white mt-6 text-xl mb-2">
-        Mode: <span className="text-cyan-400">{TaskModes[mode]}</span>
+        Mode:{" "}
+        <span className="text-cyan-400">
+          {TaskModes[mode as keyof typeof TaskModes]}
+        </span>
       </h1>
     </div>
   );

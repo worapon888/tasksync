@@ -5,12 +5,13 @@ import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import type { IncomingTask } from "@/types/task";
 import { TaskMode } from "@/generated/prisma";
-
+import { Task } from "@/types/task";
 interface NewTaskModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit?: (task: IncomingTask) => void;
   mode: TaskMode;
+  editingTask?: Task | null;
 }
 
 export default function NewTaskModal({

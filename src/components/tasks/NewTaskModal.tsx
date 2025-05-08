@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import type { IncomingTask } from "@/types/task";
-import { TaskMode } from "@/generated/prisma";
+import { TaskMode, TaskPriority } from "@/generated/prisma";
 import { Task } from "@/types/task";
+
 interface NewTaskModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -18,51 +19,77 @@ export default function NewTaskModal({
   isOpen,
   onClose,
   mode,
+  editingTask,
 }: NewTaskModalProps) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [cover, setCover] = useState("");
-  const [priority, setPriority] = useState<"low" | "medium" | "high">("medium");
+  const [priority, setPriority] = useState<TaskPriority>("medium");
+
+  useEffect(() => {
+    if (editingTask) {
+      setTitle(editingTask.title || "");
+      setDescription(editingTask.description || "");
+      setDate(
+        editingTask.dueDate
+          ? new Date(editingTask.dueDate).toISOString().slice(0, 16)
+          : ""
+      );
+      setCover(editingTask.cover || "");
+      setPriority(editingTask.priority || "medium");
+    } else {
+      setTitle("");
+      setDescription("");
+      setDate("");
+      setCover("");
+      setPriority("medium");
+    }
+  }, [editingTask, isOpen]);
 
   if (!isOpen) return null;
 
   const handleSubmit = async () => {
     if (!title.trim()) return;
 
-    const newTask = {
+    const payload = {
       title,
       description,
       dueDate: date ? new Date(date).toISOString() : null,
       cover,
       priority,
-
-      mode, // ✅ สำคัญ! ต้องแนบ mode ไปด้วย
+      mode,
     };
 
+    console.log("\ud83d\udce4 Submitting Task Payload:", payload);
+
+    const url = editingTask ? `/api/tasks/${editingTask.id}` : "/api/tasks";
+    const method = editingTask ? "PUT" : "POST";
+
     try {
-      const res = await fetch("/api/tasks", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newTask),
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
-        console.error("Failed to create task");
+        console.error("\u274c Failed to submit task");
         return;
       }
 
-      // reset state
+      const updated = await res.json();
+      console.log("\u2705 Task updated/created:", updated);
+
       setTitle("");
       setDescription("");
       setDate("");
       setCover("");
       setPriority("medium");
+
       onClose();
     } catch (error) {
-      console.error("Error submitting task:", error);
+      console.error("\u274c Error submitting task:", error);
     }
   };
 
@@ -72,7 +99,7 @@ export default function NewTaskModal({
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "task_upload"); // ต้องตรงกับที่สร้างไว้ใน Cloudinary
+    formData.append("upload_preset", "task_upload");
 
     try {
       const res = await fetch(
@@ -84,7 +111,6 @@ export default function NewTaskModal({
       );
 
       const data = await res.json();
-
       if (data.secure_url) {
         setCover(data.secure_url);
       } else {
@@ -99,7 +125,7 @@ export default function NewTaskModal({
     <div className="fixed inset-0 bg-black/40 z-50 backdrop-blur-3xl flex items-center justify-center">
       <div className="bg-white dark:bg-black/80 rounded-xl w-full max-w-lg p-6 space-y-4">
         <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
-          Create New Task
+          {editingTask ? "Edit Task" : "Create New Task"}
         </h2>
 
         <input
@@ -149,20 +175,21 @@ export default function NewTaskModal({
         <div className="relative w-full">
           <select
             value={priority}
-            onChange={(e) =>
-              setPriority(e.target.value as "low" | "medium" | "high")
-            }
+            onChange={(e) => setPriority(e.target.value as TaskPriority)}
             className="appearance-none w-full p-2 pr-10 rounded border bg-transparent text-black dark:bg-slate-600 dark:text-white dark:border-slate-500"
           >
-            <option value="low">Low Priority</option>
-            <option value="medium">Medium Priority</option>
-            <option value="high">High Priority</option>
+            {Object.values(TaskPriority).map((p) => (
+              <option key={p} value={p}>
+                {p.charAt(0).toUpperCase() + p.slice(1)} Priority
+              </option>
+            ))}
           </select>
 
           <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-white">
             <ChevronDown size={18} />
           </div>
         </div>
+
         <div className="flex justify-end gap-2">
           <button
             onClick={onClose}
@@ -174,7 +201,7 @@ export default function NewTaskModal({
             onClick={handleSubmit}
             className="px-4 py-2 bg-slate-700 text-white rounded hover:bg-slate-900 cursor-pointer"
           >
-            Create
+            {editingTask ? "Save Changes" : "Create"}
           </button>
         </div>
       </div>

@@ -25,28 +25,35 @@ export default function BoardPage() {
     <div className="relative z-10 ml-0 md:ml-24 px-4 py-10 md:px-10 mt-10 h-screen overflow-auto">
       <ModeSelector />
       <div className="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
-        {columns.map((col) => (
-          <ColumnSection
-            key={col.id}
-            colId={col.id as ColumnType}
-            title={col.title}
-            color={col.color}
-            tasks={tasks[col.id as ColumnType] || []}
-            onAddClick={
-              col.id === "todo"
-                ? () => {
-                    if (!session?.user) {
-                      signIn(undefined, { callbackUrl: "/dashboard/board" });
-                    } else {
-                      openForNew();
+        {columns.map((col) => {
+          const columnId = col.id as ColumnType;
+          const columnTasks = tasks[columnId] || [];
+
+          return (
+            <ColumnSection
+              key={`${columnId}-${columnTasks
+                .map((t) => t.updatedAt)
+                .join(",")}`}
+              colId={columnId}
+              title={col.title}
+              color={col.color}
+              tasks={columnTasks}
+              onAddClick={
+                columnId === "todo"
+                  ? () => {
+                      if (!session?.user) {
+                        signIn(undefined, { callbackUrl: "/dashboard/board" });
+                      } else {
+                        openForNew();
+                      }
                     }
-                  }
-                : undefined
-            }
-            onEditTask={openForEdit}
-            onDeleteSuccess={fetchTasks}
-          />
-        ))}
+                  : undefined
+              }
+              onEditTask={openForEdit}
+              onDeleteSuccess={fetchTasks}
+            />
+          );
+        })}
       </div>
       {TaskModal}
     </div>

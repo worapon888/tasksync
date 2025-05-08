@@ -1,4 +1,3 @@
-// components/tasks/TaskModalController.tsx
 "use client";
 
 import { useState } from "react";
@@ -25,6 +24,24 @@ export default function TaskModalController({ mode, onSuccess }: Props) {
     setIsOpen(true);
   };
 
+  const handleSubmit = async (task: Partial<Task>) => {
+    const method = editingTask ? "PUT" : "POST";
+    const url = editingTask ? `/api/tasks/${editingTask.id}` : "/api/tasks";
+
+    const res = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...task, mode }),
+    });
+
+    if (res.ok) {
+      setIsOpen(false); // ✅ ปิด modal
+      onSuccess(); // ✅ รีเฟรช task list หรือ reload UI
+    } else {
+      console.error("❌ Failed to submit task (controller)");
+    }
+  };
+
   return {
     isOpen,
     openForNew,
@@ -35,23 +52,7 @@ export default function TaskModalController({ mode, onSuccess }: Props) {
         onClose={() => setIsOpen(false)}
         mode={mode}
         editingTask={editingTask}
-        onSubmit={async (task) => {
-          const method = editingTask ? "PUT" : "POST";
-          const url = editingTask
-            ? `/api/tasks/${editingTask.id}`
-            : "/api/tasks";
-
-          const res = await fetch(url, {
-            method,
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ...task, mode }),
-          });
-
-          if (res.ok) {
-            setIsOpen(false);
-            onSuccess();
-          }
-        }}
+        onSubmit={handleSubmit}
       />
     ),
   };

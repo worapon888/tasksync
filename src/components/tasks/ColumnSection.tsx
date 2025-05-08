@@ -35,9 +35,9 @@ export default function ColumnSection({
         )}
       </div>
 
-      {tasks.map((task, i) => (
+      {tasks.map((task) => (
         <TaskCard
-          key={i}
+          key={`${task.id}-${task.updatedAt}`}
           task={task}
           onEdit={() => onEditTask(task)}
           onDeleteSuccess={onDeleteSuccess}

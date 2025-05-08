@@ -18,7 +18,6 @@ export default function TaskCard({
   onDeleteSuccess?: () => void;
 }) {
   const { deleteTask } = useTaskContext();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   return (

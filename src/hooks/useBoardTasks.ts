@@ -15,7 +15,7 @@ export default function useBoardTasks() {
   });
 
   const fetchTasks = async () => {
-    if (!session?.user) return;
+    if (!session?.user || !mode) return;
 
     const res = await fetch(`/api/tasks?mode=${mode}`);
     const data = await res.json();
@@ -35,7 +35,7 @@ export default function useBoardTasks() {
       else grouped.todo.push(task);
     });
 
-    setTasks(grouped);
+    setTasks({ ...grouped });
   };
 
   useEffect(() => {

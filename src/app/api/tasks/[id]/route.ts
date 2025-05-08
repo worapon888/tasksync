@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
 import { authOptions } from "../../auth/[...nextauth]/route"; // ปรับ path ตามจริง
@@ -29,5 +29,41 @@ export async function DELETE(
   } catch (err) {
     console.error("❌ DELETE error:", err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+}
+
+export async function PUT(
+  req: NextRequest,
+  contextPromise: Promise<{ params: { id: string } }>
+) {
+  const { params } = await contextPromise;
+  const taskId = params.id;
+
+  try {
+    const data = await req.json();
+
+    console.log("🛠️ PUT Task ID:", taskId);
+    console.log("📦 Payload received:", data);
+
+    const updated = await prisma.task.update({
+      where: { id: taskId },
+      data: {
+        title: data.title,
+        description: data.description,
+        dueDate: data.dueDate ? new Date(data.dueDate) : null,
+        cover: data.cover,
+        priority: data.priority,
+        mode: data.mode,
+        status: data.status ?? "TODO",
+      },
+    });
+
+    return NextResponse.json(updated);
+  } catch (error) {
+    console.error("❌ PUT /task/:id failed:", error);
+    return NextResponse.json(
+      { error: "Update failed", detail: String(error) },
+      { status: 500 }
+    );
   }
 }

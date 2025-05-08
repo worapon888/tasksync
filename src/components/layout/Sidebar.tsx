@@ -46,13 +46,13 @@ export default function Sidebar() {
             <Image
               src={user.image}
               alt="Avatar"
-              width={48} // ✅ ใหญ่ขึ้น
-              height={48}
+              width={32} // ✅ ใหญ่ขึ้น
+              height={32}
               className="rounded-full border border-cyan-400"
               title={user.email || ""}
             />
           ) : (
-            <UserCircle className="w-10 h-10 text-cyan-400" />
+            <UserCircle className="w-8 h-8 text-cyan-400" />
           )}
           <LogOut
             onClick={() => signOut()}

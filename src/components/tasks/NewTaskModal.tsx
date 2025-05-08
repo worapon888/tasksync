@@ -20,6 +20,7 @@ export default function NewTaskModal({
   onClose,
   mode,
   editingTask,
+  onSubmit,
 }: NewTaskModalProps) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -61,8 +62,6 @@ export default function NewTaskModal({
       mode,
     };
 
-    console.log("\ud83d\udce4 Submitting Task Payload:", payload);
-
     const url = editingTask ? `/api/tasks/${editingTask.id}` : "/api/tasks";
     const method = editingTask ? "PUT" : "POST";
 
@@ -74,13 +73,19 @@ export default function NewTaskModal({
       });
 
       if (!res.ok) {
-        console.error("\u274c Failed to submit task");
+        console.error("❌ Failed to submit task");
         return;
       }
 
       const updated = await res.json();
-      console.log("\u2705 Task updated/created:", updated);
+      console.log("✅ Task updated/created:", updated);
 
+      // ✅ เรียก onSubmit หลังจากได้ผลลัพธ์จริง
+      if (onSubmit) {
+        await onSubmit(updated);
+      }
+
+      // reset
       setTitle("");
       setDescription("");
       setDate("");
@@ -89,7 +94,7 @@ export default function NewTaskModal({
 
       onClose();
     } catch (error) {
-      console.error("\u274c Error submitting task:", error);
+      console.error("❌ Error submitting task:", error);
     }
   };
 

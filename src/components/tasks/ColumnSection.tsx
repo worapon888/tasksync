@@ -37,7 +37,7 @@ export default function ColumnSection({
 
       {tasks.map((task) => (
         <TaskCard
-          key={`${task.id}-${task.updatedAt}`}
+          key={`${task.id}-${new Date(task.updatedAt).getTime()}`}
           task={task}
           onEdit={() => onEditTask(task)}
           onDeleteSuccess={onDeleteSuccess}

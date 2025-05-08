@@ -28,11 +28,22 @@ export default function useBoardTasks() {
     };
 
     data.tasks.forEach((task: Task) => {
-      if (task.status === "todo") grouped.todo.push(task);
-      else if (task.status === "in_progress") grouped.doing.push(task);
-      else if (task.status === "review") grouped.review.push(task);
-      else if (task.status === "done") grouped.done.push(task);
-      else grouped.todo.push(task);
+      switch (task.status) {
+        case "todo":
+          grouped.todo.push(task);
+          break;
+        case "in_progress":
+          grouped.doing.push(task);
+          break;
+        case "review":
+          grouped.review.push(task);
+          break;
+        case "done":
+          grouped.done.push(task);
+          break;
+        default:
+          grouped.todo.push(task);
+      }
     });
 
     setTasks({ ...grouped });

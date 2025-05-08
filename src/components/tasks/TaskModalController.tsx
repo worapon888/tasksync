@@ -48,6 +48,7 @@ export default function TaskModalController({ mode, onSuccess }: Props) {
     openForEdit,
     TaskModal: (
       <NewTaskModal
+        key={editingTask?.id || "new"}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         mode={mode}

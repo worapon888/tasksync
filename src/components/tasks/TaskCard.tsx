@@ -1,10 +1,10 @@
 "use client";
+
 import Image from "next/image";
 import { FaCalendarAlt } from "react-icons/fa";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { Task } from "@/types/task";
-import { useTaskContext } from "@/context/TaskContext";
 import TaskCardDropdown from "./TaskCardDropdown";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 
@@ -17,8 +17,12 @@ export default function TaskCard({
   onEdit: () => void;
   onDeleteSuccess?: () => void;
 }) {
-  const { deleteTask } = useTaskContext();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+
+  const handleDelete = async () => {
+    await fetch(`/api/tasks/${task.id}`, { method: "DELETE" });
+    onDeleteSuccess?.();
+  };
 
   return (
     <div className="rounded-xl dark:bg-black/60 bg-white/80 dark:text-white text-gray-500 border border-white/10 backdrop-blur-sm p-4 w-full max-w-sm relative">
@@ -37,15 +41,12 @@ export default function TaskCard({
         <h3 className="font-semibold text-lg">{task.title}</h3>
         <TaskCardDropdown
           onEdit={onEdit}
-          onDelete={() => setIsConfirmOpen(true)} // ✅ เปิด modal แทน
+          onDelete={() => setIsConfirmOpen(true)}
         />
         <ConfirmDeleteModal
           isOpen={isConfirmOpen}
           onClose={() => setIsConfirmOpen(false)}
-          onConfirm={async () => {
-            await deleteTask(task.id);
-            onDeleteSuccess?.();
-          }}
+          onConfirm={handleDelete}
         />
       </div>
       <p className="dark:text-white/50 text-slate-500 text-sm line-clamp-2 mb-4">

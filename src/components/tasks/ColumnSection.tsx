@@ -2,8 +2,11 @@
 import { Task, ColumnType } from "@/types/task";
 import TaskCard from "./TaskCard";
 import { Plus } from "lucide-react";
+import { useDroppable } from "@dnd-kit/core";
+import { useDragContext } from "@/context/DragDropContext";
 
 export default function ColumnSection({
+  colId,
   title,
   color,
   tasks,
@@ -15,12 +18,24 @@ export default function ColumnSection({
   title: string;
   color: string;
   tasks: Task[];
+
   onAddClick?: () => void;
   onEditTask: (task: Task) => void;
   onDeleteSuccess?: () => void;
 }) {
+  const { setNodeRef, isOver } = useDroppable({ id: colId });
+  const { activeTaskId } = useDragContext();
+
+  const isEmpty = tasks.length === 0;
+
   return (
-    <div className="flex flex-col gap-4">
+    <div
+      ref={setNodeRef}
+      className={`flex flex-col gap-4 rounded-xl p-4 shadow-md min-h-[200px] transition-all duration-300 ${
+        isOver ? "bg-white/5 border border-white/10 scale-[1.01]" : ""
+      }`}
+    >
+      {/* Header */}
       <div className="flex items-center gap-2">
         <div className={`w-3 h-3 rounded-full ${color}`}></div>
         <h2 className="text-white text-lg font-semibold">{title}</h2>
@@ -35,6 +50,7 @@ export default function ColumnSection({
         )}
       </div>
 
+      {/* Task list */}
       {tasks.map((task) => (
         <TaskCard
           key={`${task.id}-${new Date(task.updatedAt).getTime()}`}
@@ -44,6 +60,14 @@ export default function ColumnSection({
         />
       ))}
 
+      {/* ถ้าไม่มี task */}
+      {isEmpty && (
+        <p className="text-center text-sm text-zinc-400 italic py-4">
+          {activeTaskId ? "Drop task here" : "No tasks in this column"}
+        </p>
+      )}
+
+      {/* Add Button / Placeholder */}
       {onAddClick ? (
         <button
           onClick={onAddClick}

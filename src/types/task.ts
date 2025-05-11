@@ -1,5 +1,10 @@
 // Task Status และ Priority ที่ใช้ในระบบ
-export type TaskStatus = "todo" | "in_progress" | "review" | "done";
+export type TaskStatus = "TODO" | "DOING" | "REVIEW" | "DONE";
+
+export type TasksByColumn = {
+  [key in TaskStatus]: Task[];
+};
+
 export type TaskPriority = "low" | "medium" | "high";
 
 // Enum สำหรับ TaskMode ที่ตรงกับ Prisma และระบบ
@@ -41,8 +46,6 @@ export interface Task {
 
 // แยกประเภท task สำหรับใช้ในหน้า board (drag & drop ได้ในอนาคต)
 export type ColumnType = "todo" | "doing" | "review" | "done";
-
-export type TasksByColumn = Record<ColumnType, Task[]>;
 
 // สำหรับ Modal (ยังเปิดใช้ต่อได้)
 export interface NewTaskModalProps {

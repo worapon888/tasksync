@@ -8,10 +8,10 @@ export default function useBoardTasks() {
   const { data: session } = useSession();
   const { mode } = useTaskMode();
   const [tasks, setTasks] = useState<TasksByColumn>({
-    todo: [],
-    doing: [],
-    review: [],
-    done: [],
+    TODO: [],
+    DOING: [],
+    REVIEW: [],
+    DONE: [],
   });
 
   const fetchTasks = async () => {
@@ -21,31 +21,30 @@ export default function useBoardTasks() {
     const data = await res.json();
 
     const grouped: TasksByColumn = {
-      todo: [],
-      doing: [],
-      review: [],
-      done: [],
+      TODO: [],
+      DOING: [],
+      REVIEW: [],
+      DONE: [],
     };
 
     data.tasks.forEach((task: Task) => {
       switch (task.status) {
-        case "todo":
-          grouped.todo.push(task);
+        case "TODO":
+          grouped.TODO.push(task);
           break;
-        case "in_progress":
-          grouped.doing.push(task);
+        case "DOING":
+          grouped.DOING.push(task);
           break;
-        case "review":
-          grouped.review.push(task);
+        case "REVIEW":
+          grouped.REVIEW.push(task);
           break;
-        case "done":
-          grouped.done.push(task);
+        case "DONE":
+          grouped.DONE.push(task);
           break;
         default:
-          grouped.todo.push(task);
+          grouped.TODO.push(task);
       }
     });
-
     setTasks({ ...grouped });
   };
 

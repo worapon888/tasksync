@@ -43,9 +43,6 @@ export async function PUT(
   try {
     const data = await req.json();
 
-    console.log("🛠️ PUT Task ID:", taskId);
-    console.log("📦 Payload received:", data);
-
     const updated = await prisma.task.update({
       where: { id: taskId },
       data: {
@@ -66,5 +63,50 @@ export async function PUT(
       { error: "Update failed", detail: String(error) },
       { status: 500 }
     );
+  }
+}
+
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const taskId = params.id;
+
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.id) {
+    console.log("⛔ ไม่มี session");
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    const data = await req.json();
+
+    console.log("📦 PATCH payload:", data);
+    console.log("👤 session user:", session.user.id);
+
+    const task = await prisma.task.findUnique({ where: { id: taskId } });
+
+    if (!task) {
+      console.log("❌ ไม่พบ task");
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+
+    if (task.userId !== session.user.id) {
+      console.log("⛔ user ไม่ตรงกัน");
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    const updated = await prisma.task.update({
+      where: { id: taskId },
+      data: {
+        status: data.status, // 👈 ตรงนี้ระวังว่าต้องเป็น string ที่ถูกต้อง เช่น "doing"
+      },
+    });
+
+    console.log("✅ Task updated:", updated);
+    return NextResponse.json(updated);
+  } catch (err) {
+    console.error("❌ PATCH error:", err);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

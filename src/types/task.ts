@@ -1,3 +1,5 @@
+import { TaskPriority, TaskMode } from "@/generated/prisma";
+
 // Task Status และ Priority ที่ใช้ในระบบ
 export type TaskStatus = "TODO" | "DOING" | "REVIEW" | "DONE";
 
@@ -5,20 +7,7 @@ export type TasksByColumn = {
   [key in TaskStatus]: Task[];
 };
 
-export type TaskPriority = "low" | "medium" | "high";
-
 // Enum สำหรับ TaskMode ที่ตรงกับ Prisma และระบบ
-export enum TaskMode {
-  PersonalAssistant = "PersonalAssistant",
-  CareerTransition = "CareerTransition",
-  FinancialPlanner = "FinancialPlanner",
-  BusinessLaunchpad = "BusinessLaunchpad",
-  SocialGrowth = "SocialGrowth",
-  PersonalDevelopment = "PersonalDevelopment",
-  HealthJourney = "HealthJourney",
-  LeisureBalance = "LeisureBalance",
-  MindfulLiving = "MindfulLiving",
-}
 
 // ใช้ตอนกรอกใน Modal ยังไม่ต้องมี userId หรือ id
 export interface IncomingTask {
@@ -27,6 +16,7 @@ export interface IncomingTask {
   dueDate?: string;
   cover?: string;
   priority: TaskPriority;
+  mode: TaskMode;
 }
 
 // Task ที่ได้จากฐานข้อมูล
@@ -43,6 +33,11 @@ export interface Task {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type ModePercentage = {
+  mode: string;
+  progress: number;
+};
 
 // แยกประเภท task สำหรับใช้ในหน้า board (drag & drop ได้ในอนาคต)
 export type ColumnType = "todo" | "doing" | "review" | "done";
@@ -66,3 +61,19 @@ export type RawTask = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type GroupedStatus = {
+  total: number;
+  toDo: number;
+  inProgress: number;
+  review: number;
+  done: number;
+};
+
+export interface DashboardData {
+  grouped: GroupedStatus;
+  byDay: number[]; // 7 วันในสัปดาห์ (จันทร์–อาทิตย์)
+  focusTasks: Task[]; // ใช้ type Task ที่คุณมีอยู่แล้ว
+  modePercentages: ModePercentage[]; // มีแล้วในไฟล์
+  tasks: Task[];
+}

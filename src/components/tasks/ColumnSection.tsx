@@ -62,7 +62,7 @@ export default function ColumnSection({
 
       {/* ถ้าไม่มี task */}
       {isEmpty && (
-        <p className="text-center text-sm text-zinc-400 italic py-4">
+        <p className="text-center text-sm dark:text-zinc-400 italic py-4">
           {activeTaskId ? "Drop task here" : "No tasks in this column"}
         </p>
       )}

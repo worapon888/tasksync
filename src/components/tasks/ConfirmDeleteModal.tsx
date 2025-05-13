@@ -26,7 +26,7 @@ export default function ConfirmDeleteModal({
           </p>
           <div className="mt-6 flex justify-center gap-4">
             <button
-              className="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300 dark:bg-zinc-700 dark:hover:bg-zinc-600 cursor-pointer"
+              className="px-4 py-2 rounded-md bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-zinc-700 dark:hover:bg-zinc-600 cursor-pointer"
               onClick={onClose}
             >
               Cancel

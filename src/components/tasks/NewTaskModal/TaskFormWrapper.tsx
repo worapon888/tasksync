@@ -8,14 +8,14 @@ import ImageUploader from "./ImageUploader";
 import PrioritySelector from "./PrioritySelector";
 import ActionButtons from "./ActionButtons";
 
-import type { Task } from "@/types/task";
+import type { IncomingTask } from "@/types/task";
 import { TaskPriority, TaskMode } from "@/generated/prisma";
 
 interface TaskFormWrapperProps {
   mode: TaskMode;
-  editingTask?: Task | null;
+  editingTask?: IncomingTask | null;
   onClose: () => void;
-  onSubmit?: (task: Task) => void;
+  onSubmit?: (task: IncomingTask) => void;
 }
 
 export default function TaskFormWrapper({
@@ -50,49 +50,28 @@ export default function TaskFormWrapper({
     }
   }, [editingTask]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!title.trim()) return;
 
-    const payload = {
+    const payload: IncomingTask = {
       title,
       description,
-      dueDate: date ? new Date(date).toISOString() : undefined,
+      dueDate: date || undefined,
       cover,
       priority,
       mode,
     };
 
-    const url = editingTask ? `/api/tasks/${editingTask.id}` : "/api/tasks";
-    const method = editingTask ? "PUT" : "POST";
+    onSubmit?.(payload);
 
-    try {
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+    // Reset
+    setTitle("");
+    setDescription("");
+    setDate("");
+    setCover("");
+    setPriority("medium");
 
-      if (!res.ok) {
-        console.error("❌ Failed to submit task");
-        return;
-      }
-
-      const updated = (await res.json()) as Task; // ✅ ใส่ type
-      if (onSubmit) {
-        await onSubmit(updated); // ✅ ปลอดภัย type
-      }
-
-      // Reset state
-      setTitle("");
-      setDescription("");
-      setDate("");
-      setCover("");
-      setPriority("medium");
-
-      onClose();
-    } catch (err) {
-      console.error("❌ Error submitting task:", err);
-    }
+    onClose();
   };
 
   return (

@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import NewTaskModal from "./NewTaskModal";
-import { TaskMode } from "@/generated/prisma";
-import { Task } from "@/types/task";
+import { TaskMode, Task } from "@/generated/prisma";
 import { useEnergy } from "@/context/EnergyContext";
+import { IncomingTask } from "@/types/task";
 
 type Props = {
   mode: TaskMode;
@@ -13,7 +13,9 @@ type Props = {
 
 export default function TaskModalController({ mode, onSuccess }: Props) {
   const [isOpen, setIsOpen] = useState(false);
-  const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const [editingTask, setEditingTask] = useState<IncomingTask | null>(null);
+  const [prefillDate, setPrefillDate] = useState<Date | null>(null);
+
   const { refetchEnergy } = useEnergy();
 
   const openForNew = () => {
@@ -22,13 +24,29 @@ export default function TaskModalController({ mode, onSuccess }: Props) {
   };
 
   const openForEdit = (task: Task) => {
-    setEditingTask(task);
+    const simplifiedTask: IncomingTask = {
+      title: task.title,
+      description: task.description ?? "",
+      dueDate: task.dueDate ? new Date(task.dueDate).toISOString() : undefined,
+      cover: task.cover ?? "",
+      priority: task.priority,
+      mode: task.mode,
+    };
+
+    setEditingTask(simplifiedTask);
     setIsOpen(true);
   };
 
-  const handleSubmit = async (task: Partial<Task>) => {
+  const handleAddTask = (day: number, month: number, year: number) => {
+    const date = new Date(year, month, day, 23, 59);
+    setPrefillDate(date);
+    setEditingTask(null);
+    setIsOpen(true);
+  };
+
+  const handleSubmit = async (task: IncomingTask) => {
     const method = editingTask ? "PUT" : "POST";
-    const url = editingTask ? `/api/tasks/${editingTask.id}` : "/api/tasks";
+    const url = editingTask ? `/api/tasks/${editingTask.title}` : "/api/tasks";
 
     const res = await fetch(url, {
       method,
@@ -38,8 +56,8 @@ export default function TaskModalController({ mode, onSuccess }: Props) {
 
     if (res.ok) {
       setIsOpen(false);
-      await refetchEnergy(); // ✅ ปิด modal--
-      onSuccess(); // ✅ รีเฟรช task list หรือ reload UI
+      await refetchEnergy();
+      onSuccess();
     } else {
       console.error("❌ Failed to submit task (controller)");
     }
@@ -49,13 +67,15 @@ export default function TaskModalController({ mode, onSuccess }: Props) {
     isOpen,
     openForNew,
     openForEdit,
+    handleAddTask,
     TaskModal: (
       <NewTaskModal
-        key={editingTask?.id || "new"}
+        key={editingTask?.title || "new"}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         mode={mode}
         editingTask={editingTask}
+        defaultDate={prefillDate ?? undefined}
         onSubmit={handleSubmit}
       />
     ),

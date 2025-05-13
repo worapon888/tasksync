@@ -16,6 +16,7 @@ interface TaskFormWrapperProps {
   editingTask?: IncomingTask | null;
   onClose: () => void;
   onSubmit?: (task: IncomingTask) => void;
+  defaultDate?: Date;
 }
 
 export default function TaskFormWrapper({
@@ -23,6 +24,7 @@ export default function TaskFormWrapper({
   editingTask,
   onClose,
   onSubmit,
+  defaultDate,
 }: TaskFormWrapperProps) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -48,7 +50,7 @@ export default function TaskFormWrapper({
       setCover("");
       setPriority("medium");
     }
-  }, [editingTask]);
+  }, [editingTask, defaultDate]);
 
   const handleSubmit = () => {
     if (!title.trim()) return;

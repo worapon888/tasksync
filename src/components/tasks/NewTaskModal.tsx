@@ -1,15 +1,16 @@
 "use client";
 
 import TaskFormWrapper from "./NewTaskModal/TaskFormWrapper";
-import type { Task } from "@/types/task";
+import type { IncomingTask } from "@/types/task";
 import { TaskMode } from "@/generated/prisma";
 
 interface NewTaskModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit?: (task: Task) => void; // ✅ ตรงกับที่ส่งจริง
+  onSubmit?: (task: IncomingTask) => void; // ✅ แก้ตรงนี้
   mode: TaskMode;
-  editingTask?: Task | null;
+  editingTask?: IncomingTask | null; // ✅ แก้ตรงนี้
+  defaultDate?: Date;
 }
 
 export default function NewTaskModal({
@@ -18,6 +19,7 @@ export default function NewTaskModal({
   mode,
   editingTask,
   onSubmit,
+  defaultDate,
 }: NewTaskModalProps) {
   if (!isOpen) return null;
 
@@ -33,6 +35,7 @@ export default function NewTaskModal({
           editingTask={editingTask}
           onClose={onClose}
           onSubmit={onSubmit}
+          defaultDate={defaultDate}
         />
       </div>
     </div>

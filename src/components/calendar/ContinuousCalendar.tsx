@@ -11,10 +11,12 @@ import { useTaskContext } from "@/context/TaskContext";
 
 interface ContinuousCalendarProps {
   onClick?: (_day: number, _month: number, _year: number) => void;
+  onAddTask?: (_day: number, _month: number, _year: number) => void;
 }
 
 export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
   onClick,
+  onAddTask,
 }) => {
   const today = new Date();
   const dayRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -288,22 +290,28 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
                     </span>
                   )}
                   {/* ปุ่มเพิ่มงาน */}
-                  <button
-                    type="button"
-                    className="absolute right-2 top-2 rounded-full opacity-0 transition-all focus:opacity-100 group-hover:opacity-100"
-                  >
-                    <svg
-                      className="size-8 scale-90 text-blue-500 transition-all hover:scale-100 group-focus:scale-100"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
+                  {onAddTask && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation(); // ✅ ไม่ให้คลิกไปโดน handleDayClick
+                        onAddTask(day, month, year); // ✅ ส่งวันที่ไปเปิด modal
+                      }}
+                      className="absolute right-2 top-2 rounded-full opacity-0 transition-all focus:opacity-100 group-hover:opacity-100"
                     >
-                      <path
-                        fillRule="evenodd"
-                        d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
+                      <svg
+                        className="size-6 text-blue-500 transition-all hover:scale-110 group-focus:scale-100 cursor-pointer"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  )}
                 </div>
               );
             })}

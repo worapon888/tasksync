@@ -7,12 +7,16 @@ import React, {
   ReactNode,
   useCallback,
 } from "react";
-import { ErrorIcon, SuccessIcon } from "@/components/icons/SnackIcons";
+import {
+  ErrorIcon,
+  SuccessIcon,
+  InfoIcon,
+} from "@/components/icons/SnackIcons";
 
-type Variant = "success" | "error";
+type Variant = "success" | "error" | "info";
 
 interface SnackContextType {
-  createSnack: (message: any, variant: Variant) => void;
+  createSnack: (message: string, variant: Variant) => void;
 }
 
 const SnackContext = createContext<SnackContextType | undefined>(undefined);
@@ -39,28 +43,23 @@ interface Snack {
 export const SnackProvider: React.FC<SnackProviderProps> = ({ children }) => {
   const [snacks, setSnacks] = useState<Snack[]>([]);
 
-  const createSnack = useCallback(
-    (message: any, variant: "success" | "error") => {
-      const id = Date.now();
-      const newSnack = { id, message, variant, visible: true };
-      setSnacks([newSnack]);
+  const createSnack = useCallback((message: string, variant: Variant) => {
+    const id = Date.now();
+    const newSnack = { id, message, variant, visible: true };
+    setSnacks([newSnack]);
 
-      setTimeout(() => {
-        setSnacks((prevSnacks) =>
-          prevSnacks.map((snack) =>
-            snack.id === id ? { ...snack, visible: false } : snack
-          )
-        );
-      }, 2500);
+    setTimeout(() => {
+      setSnacks((prevSnacks) =>
+        prevSnacks.map((snack) =>
+          snack.id === id ? { ...snack, visible: false } : snack
+        )
+      );
+    }, 2500);
 
-      setTimeout(() => {
-        setSnacks((prevSnacks) =>
-          prevSnacks.filter((snack) => snack.id !== id)
-        );
-      }, 3000);
-    },
-    []
-  );
+    setTimeout(() => {
+      setSnacks((prevSnacks) => prevSnacks.filter((snack) => snack.id !== id));
+    }, 3000);
+  }, []);
 
   return (
     <SnackContext.Provider value={{ createSnack }}>
@@ -91,6 +90,8 @@ const getVariantIcon = (variant: Variant) => {
       return <SuccessIcon />;
     case "error":
       return <ErrorIcon />;
+    case "info":
+      return <InfoIcon />;
     default:
       throw new Error(`Unknown variant: ${variant}`);
   }

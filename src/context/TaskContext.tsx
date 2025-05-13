@@ -1,6 +1,12 @@
 "use client";
-
-import { createContext, useContext, useState, ReactNode } from "react";
+import { TaskMode, TaskStatus, TaskPriority } from "@/generated/prisma";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 export type Task = {
   id: string;
@@ -8,6 +14,9 @@ export type Task = {
   description: string;
   dueDate: string;
   cover?: string;
+  status: TaskStatus;
+  priority: TaskPriority;
+  mode: TaskMode;
 };
 
 type TaskContextType = {
@@ -22,11 +31,24 @@ const TaskContext = createContext<TaskContextType | undefined>(undefined);
 export const TaskProvider = ({ children }: { children: ReactNode }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
 
-  const deleteTask = async (id: string) => {
-    // ลบจาก database ผ่าน API
-    await fetch(`/api/tasks/${id}`, { method: "DELETE" });
+  // ✅ โหลด tasks ทันทีจาก backend
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const res = await fetch("/api/tasks");
+        if (!res.ok) throw new Error("Failed to load tasks");
+        const data = await res.json();
+        setTasks(data.tasks);
+      } catch (err) {
+        console.error("Error loading tasks:", err);
+      }
+    };
 
-    // ลบจาก context state (ถ้ามี setTasks ภายใน context ด้วย)
+    fetchTasks();
+  }, []);
+
+  const deleteTask = async (id: string) => {
+    await fetch(`/api/tasks/${id}`, { method: "DELETE" });
     setTasks((prev) => prev.filter((task) => task.id !== id));
   };
 

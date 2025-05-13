@@ -38,6 +38,11 @@ export type Session = $Result.DefaultSelection<Prisma.$SessionPayload>
  * 
  */
 export type VerificationToken = $Result.DefaultSelection<Prisma.$VerificationTokenPayload>
+/**
+ * Model EnergyRecord
+ * 
+ */
+export type EnergyRecord = $Result.DefaultSelection<Prisma.$EnergyRecordPayload>
 
 /**
  * Enums
@@ -76,6 +81,15 @@ export const TaskMode: {
 
 export type TaskMode = (typeof TaskMode)[keyof typeof TaskMode]
 
+
+export const EnergyLevel: {
+  HIGH: 'HIGH',
+  MEDIUM: 'MEDIUM',
+  LOW: 'LOW'
+};
+
+export type EnergyLevel = (typeof EnergyLevel)[keyof typeof EnergyLevel]
+
 }
 
 export type TaskStatus = $Enums.TaskStatus
@@ -89,6 +103,10 @@ export const TaskPriority: typeof $Enums.TaskPriority
 export type TaskMode = $Enums.TaskMode
 
 export const TaskMode: typeof $Enums.TaskMode
+
+export type EnergyLevel = $Enums.EnergyLevel
+
+export const EnergyLevel: typeof $Enums.EnergyLevel
 
 /**
  * ##  Prisma Client ʲˢ
@@ -264,6 +282,16 @@ export class PrismaClient<
     * ```
     */
   get verificationToken(): Prisma.VerificationTokenDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.energyRecord`: Exposes CRUD operations for the **EnergyRecord** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EnergyRecords
+    * const energyRecords = await prisma.energyRecord.findMany()
+    * ```
+    */
+  get energyRecord(): Prisma.EnergyRecordDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -708,7 +736,8 @@ export namespace Prisma {
     Task: 'Task',
     Account: 'Account',
     Session: 'Session',
-    VerificationToken: 'VerificationToken'
+    VerificationToken: 'VerificationToken',
+    EnergyRecord: 'EnergyRecord'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -727,7 +756,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "task" | "account" | "session" | "verificationToken"
+      modelProps: "user" | "task" | "account" | "session" | "verificationToken" | "energyRecord"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1101,6 +1130,80 @@ export namespace Prisma {
           }
         }
       }
+      EnergyRecord: {
+        payload: Prisma.$EnergyRecordPayload<ExtArgs>
+        fields: Prisma.EnergyRecordFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EnergyRecordFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyRecordPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EnergyRecordFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyRecordPayload>
+          }
+          findFirst: {
+            args: Prisma.EnergyRecordFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyRecordPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EnergyRecordFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyRecordPayload>
+          }
+          findMany: {
+            args: Prisma.EnergyRecordFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyRecordPayload>[]
+          }
+          create: {
+            args: Prisma.EnergyRecordCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyRecordPayload>
+          }
+          createMany: {
+            args: Prisma.EnergyRecordCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EnergyRecordCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyRecordPayload>[]
+          }
+          delete: {
+            args: Prisma.EnergyRecordDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyRecordPayload>
+          }
+          update: {
+            args: Prisma.EnergyRecordUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyRecordPayload>
+          }
+          deleteMany: {
+            args: Prisma.EnergyRecordDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EnergyRecordUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EnergyRecordUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyRecordPayload>[]
+          }
+          upsert: {
+            args: Prisma.EnergyRecordUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EnergyRecordPayload>
+          }
+          aggregate: {
+            args: Prisma.EnergyRecordAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEnergyRecord>
+          }
+          groupBy: {
+            args: Prisma.EnergyRecordGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EnergyRecordGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EnergyRecordCountArgs<ExtArgs>
+            result: $Utils.Optional<EnergyRecordCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1190,6 +1293,7 @@ export namespace Prisma {
     account?: AccountOmit
     session?: SessionOmit
     verificationToken?: VerificationTokenOmit
+    energyRecord?: EnergyRecordOmit
   }
 
   /* Types for Logging */
@@ -1287,12 +1391,14 @@ export namespace Prisma {
     tasks: number
     Account: number
     Session: number
+    EnergyRecord: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tasks?: boolean | UserCountOutputTypeCountTasksArgs
     Account?: boolean | UserCountOutputTypeCountAccountArgs
     Session?: boolean | UserCountOutputTypeCountSessionArgs
+    EnergyRecord?: boolean | UserCountOutputTypeCountEnergyRecordArgs
   }
 
   // Custom InputTypes
@@ -1325,6 +1431,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountSessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SessionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountEnergyRecordArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EnergyRecordWhereInput
   }
 
 
@@ -1507,6 +1620,7 @@ export namespace Prisma {
     tasks?: boolean | User$tasksArgs<ExtArgs>
     Account?: boolean | User$AccountArgs<ExtArgs>
     Session?: boolean | User$SessionArgs<ExtArgs>
+    EnergyRecord?: boolean | User$EnergyRecordArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1542,6 +1656,7 @@ export namespace Prisma {
     tasks?: boolean | User$tasksArgs<ExtArgs>
     Account?: boolean | User$AccountArgs<ExtArgs>
     Session?: boolean | User$SessionArgs<ExtArgs>
+    EnergyRecord?: boolean | User$EnergyRecordArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1553,6 +1668,7 @@ export namespace Prisma {
       tasks: Prisma.$TaskPayload<ExtArgs>[]
       Account: Prisma.$AccountPayload<ExtArgs>[]
       Session: Prisma.$SessionPayload<ExtArgs>[]
+      EnergyRecord: Prisma.$EnergyRecordPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1958,6 +2074,7 @@ export namespace Prisma {
     tasks<T extends User$tasksArgs<ExtArgs> = {}>(args?: Subset<T, User$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Account<T extends User$AccountArgs<ExtArgs> = {}>(args?: Subset<T, User$AccountArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Session<T extends User$SessionArgs<ExtArgs> = {}>(args?: Subset<T, User$SessionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    EnergyRecord<T extends User$EnergyRecordArgs<ExtArgs> = {}>(args?: Subset<T, User$EnergyRecordArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnergyRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2450,6 +2567,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
+  }
+
+  /**
+   * User.EnergyRecord
+   */
+  export type User$EnergyRecordArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyRecord
+     */
+    select?: EnergyRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyRecord
+     */
+    omit?: EnergyRecordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyRecordInclude<ExtArgs> | null
+    where?: EnergyRecordWhereInput
+    orderBy?: EnergyRecordOrderByWithRelationInput | EnergyRecordOrderByWithRelationInput[]
+    cursor?: EnergyRecordWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EnergyRecordScalarFieldEnum | EnergyRecordScalarFieldEnum[]
   }
 
   /**
@@ -6805,6 +6946,1162 @@ export namespace Prisma {
 
 
   /**
+   * Model EnergyRecord
+   */
+
+  export type AggregateEnergyRecord = {
+    _count: EnergyRecordCountAggregateOutputType | null
+    _avg: EnergyRecordAvgAggregateOutputType | null
+    _sum: EnergyRecordSumAggregateOutputType | null
+    _min: EnergyRecordMinAggregateOutputType | null
+    _max: EnergyRecordMaxAggregateOutputType | null
+  }
+
+  export type EnergyRecordAvgAggregateOutputType = {
+    day: number | null
+    month: number | null
+    year: number | null
+    value: number | null
+  }
+
+  export type EnergyRecordSumAggregateOutputType = {
+    day: number | null
+    month: number | null
+    year: number | null
+    value: number | null
+  }
+
+  export type EnergyRecordMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    day: number | null
+    month: number | null
+    year: number | null
+    energyLevel: $Enums.EnergyLevel | null
+    value: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EnergyRecordMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    day: number | null
+    month: number | null
+    year: number | null
+    energyLevel: $Enums.EnergyLevel | null
+    value: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EnergyRecordCountAggregateOutputType = {
+    id: number
+    userId: number
+    day: number
+    month: number
+    year: number
+    energyLevel: number
+    value: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type EnergyRecordAvgAggregateInputType = {
+    day?: true
+    month?: true
+    year?: true
+    value?: true
+  }
+
+  export type EnergyRecordSumAggregateInputType = {
+    day?: true
+    month?: true
+    year?: true
+    value?: true
+  }
+
+  export type EnergyRecordMinAggregateInputType = {
+    id?: true
+    userId?: true
+    day?: true
+    month?: true
+    year?: true
+    energyLevel?: true
+    value?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EnergyRecordMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    day?: true
+    month?: true
+    year?: true
+    energyLevel?: true
+    value?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EnergyRecordCountAggregateInputType = {
+    id?: true
+    userId?: true
+    day?: true
+    month?: true
+    year?: true
+    energyLevel?: true
+    value?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type EnergyRecordAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EnergyRecord to aggregate.
+     */
+    where?: EnergyRecordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EnergyRecords to fetch.
+     */
+    orderBy?: EnergyRecordOrderByWithRelationInput | EnergyRecordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EnergyRecordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EnergyRecords from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EnergyRecords.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EnergyRecords
+    **/
+    _count?: true | EnergyRecordCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EnergyRecordAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EnergyRecordSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EnergyRecordMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EnergyRecordMaxAggregateInputType
+  }
+
+  export type GetEnergyRecordAggregateType<T extends EnergyRecordAggregateArgs> = {
+        [P in keyof T & keyof AggregateEnergyRecord]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEnergyRecord[P]>
+      : GetScalarType<T[P], AggregateEnergyRecord[P]>
+  }
+
+
+
+
+  export type EnergyRecordGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EnergyRecordWhereInput
+    orderBy?: EnergyRecordOrderByWithAggregationInput | EnergyRecordOrderByWithAggregationInput[]
+    by: EnergyRecordScalarFieldEnum[] | EnergyRecordScalarFieldEnum
+    having?: EnergyRecordScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EnergyRecordCountAggregateInputType | true
+    _avg?: EnergyRecordAvgAggregateInputType
+    _sum?: EnergyRecordSumAggregateInputType
+    _min?: EnergyRecordMinAggregateInputType
+    _max?: EnergyRecordMaxAggregateInputType
+  }
+
+  export type EnergyRecordGroupByOutputType = {
+    id: string
+    userId: string
+    day: number
+    month: number
+    year: number
+    energyLevel: $Enums.EnergyLevel
+    value: number
+    createdAt: Date
+    updatedAt: Date
+    _count: EnergyRecordCountAggregateOutputType | null
+    _avg: EnergyRecordAvgAggregateOutputType | null
+    _sum: EnergyRecordSumAggregateOutputType | null
+    _min: EnergyRecordMinAggregateOutputType | null
+    _max: EnergyRecordMaxAggregateOutputType | null
+  }
+
+  type GetEnergyRecordGroupByPayload<T extends EnergyRecordGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EnergyRecordGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EnergyRecordGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EnergyRecordGroupByOutputType[P]>
+            : GetScalarType<T[P], EnergyRecordGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EnergyRecordSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    day?: boolean
+    month?: boolean
+    year?: boolean
+    energyLevel?: boolean
+    value?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["energyRecord"]>
+
+  export type EnergyRecordSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    day?: boolean
+    month?: boolean
+    year?: boolean
+    energyLevel?: boolean
+    value?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["energyRecord"]>
+
+  export type EnergyRecordSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    day?: boolean
+    month?: boolean
+    year?: boolean
+    energyLevel?: boolean
+    value?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["energyRecord"]>
+
+  export type EnergyRecordSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    day?: boolean
+    month?: boolean
+    year?: boolean
+    energyLevel?: boolean
+    value?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type EnergyRecordOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "day" | "month" | "year" | "energyLevel" | "value" | "createdAt" | "updatedAt", ExtArgs["result"]["energyRecord"]>
+  export type EnergyRecordInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type EnergyRecordIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type EnergyRecordIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $EnergyRecordPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EnergyRecord"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      day: number
+      month: number
+      year: number
+      energyLevel: $Enums.EnergyLevel
+      value: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["energyRecord"]>
+    composites: {}
+  }
+
+  type EnergyRecordGetPayload<S extends boolean | null | undefined | EnergyRecordDefaultArgs> = $Result.GetResult<Prisma.$EnergyRecordPayload, S>
+
+  type EnergyRecordCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EnergyRecordFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EnergyRecordCountAggregateInputType | true
+    }
+
+  export interface EnergyRecordDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EnergyRecord'], meta: { name: 'EnergyRecord' } }
+    /**
+     * Find zero or one EnergyRecord that matches the filter.
+     * @param {EnergyRecordFindUniqueArgs} args - Arguments to find a EnergyRecord
+     * @example
+     * // Get one EnergyRecord
+     * const energyRecord = await prisma.energyRecord.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EnergyRecordFindUniqueArgs>(args: SelectSubset<T, EnergyRecordFindUniqueArgs<ExtArgs>>): Prisma__EnergyRecordClient<$Result.GetResult<Prisma.$EnergyRecordPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EnergyRecord that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EnergyRecordFindUniqueOrThrowArgs} args - Arguments to find a EnergyRecord
+     * @example
+     * // Get one EnergyRecord
+     * const energyRecord = await prisma.energyRecord.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EnergyRecordFindUniqueOrThrowArgs>(args: SelectSubset<T, EnergyRecordFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EnergyRecordClient<$Result.GetResult<Prisma.$EnergyRecordPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EnergyRecord that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnergyRecordFindFirstArgs} args - Arguments to find a EnergyRecord
+     * @example
+     * // Get one EnergyRecord
+     * const energyRecord = await prisma.energyRecord.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EnergyRecordFindFirstArgs>(args?: SelectSubset<T, EnergyRecordFindFirstArgs<ExtArgs>>): Prisma__EnergyRecordClient<$Result.GetResult<Prisma.$EnergyRecordPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EnergyRecord that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnergyRecordFindFirstOrThrowArgs} args - Arguments to find a EnergyRecord
+     * @example
+     * // Get one EnergyRecord
+     * const energyRecord = await prisma.energyRecord.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EnergyRecordFindFirstOrThrowArgs>(args?: SelectSubset<T, EnergyRecordFindFirstOrThrowArgs<ExtArgs>>): Prisma__EnergyRecordClient<$Result.GetResult<Prisma.$EnergyRecordPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EnergyRecords that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnergyRecordFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EnergyRecords
+     * const energyRecords = await prisma.energyRecord.findMany()
+     * 
+     * // Get first 10 EnergyRecords
+     * const energyRecords = await prisma.energyRecord.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const energyRecordWithIdOnly = await prisma.energyRecord.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EnergyRecordFindManyArgs>(args?: SelectSubset<T, EnergyRecordFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnergyRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EnergyRecord.
+     * @param {EnergyRecordCreateArgs} args - Arguments to create a EnergyRecord.
+     * @example
+     * // Create one EnergyRecord
+     * const EnergyRecord = await prisma.energyRecord.create({
+     *   data: {
+     *     // ... data to create a EnergyRecord
+     *   }
+     * })
+     * 
+     */
+    create<T extends EnergyRecordCreateArgs>(args: SelectSubset<T, EnergyRecordCreateArgs<ExtArgs>>): Prisma__EnergyRecordClient<$Result.GetResult<Prisma.$EnergyRecordPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EnergyRecords.
+     * @param {EnergyRecordCreateManyArgs} args - Arguments to create many EnergyRecords.
+     * @example
+     * // Create many EnergyRecords
+     * const energyRecord = await prisma.energyRecord.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EnergyRecordCreateManyArgs>(args?: SelectSubset<T, EnergyRecordCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EnergyRecords and returns the data saved in the database.
+     * @param {EnergyRecordCreateManyAndReturnArgs} args - Arguments to create many EnergyRecords.
+     * @example
+     * // Create many EnergyRecords
+     * const energyRecord = await prisma.energyRecord.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EnergyRecords and only return the `id`
+     * const energyRecordWithIdOnly = await prisma.energyRecord.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EnergyRecordCreateManyAndReturnArgs>(args?: SelectSubset<T, EnergyRecordCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnergyRecordPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EnergyRecord.
+     * @param {EnergyRecordDeleteArgs} args - Arguments to delete one EnergyRecord.
+     * @example
+     * // Delete one EnergyRecord
+     * const EnergyRecord = await prisma.energyRecord.delete({
+     *   where: {
+     *     // ... filter to delete one EnergyRecord
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EnergyRecordDeleteArgs>(args: SelectSubset<T, EnergyRecordDeleteArgs<ExtArgs>>): Prisma__EnergyRecordClient<$Result.GetResult<Prisma.$EnergyRecordPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EnergyRecord.
+     * @param {EnergyRecordUpdateArgs} args - Arguments to update one EnergyRecord.
+     * @example
+     * // Update one EnergyRecord
+     * const energyRecord = await prisma.energyRecord.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EnergyRecordUpdateArgs>(args: SelectSubset<T, EnergyRecordUpdateArgs<ExtArgs>>): Prisma__EnergyRecordClient<$Result.GetResult<Prisma.$EnergyRecordPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EnergyRecords.
+     * @param {EnergyRecordDeleteManyArgs} args - Arguments to filter EnergyRecords to delete.
+     * @example
+     * // Delete a few EnergyRecords
+     * const { count } = await prisma.energyRecord.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EnergyRecordDeleteManyArgs>(args?: SelectSubset<T, EnergyRecordDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EnergyRecords.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnergyRecordUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EnergyRecords
+     * const energyRecord = await prisma.energyRecord.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EnergyRecordUpdateManyArgs>(args: SelectSubset<T, EnergyRecordUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EnergyRecords and returns the data updated in the database.
+     * @param {EnergyRecordUpdateManyAndReturnArgs} args - Arguments to update many EnergyRecords.
+     * @example
+     * // Update many EnergyRecords
+     * const energyRecord = await prisma.energyRecord.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EnergyRecords and only return the `id`
+     * const energyRecordWithIdOnly = await prisma.energyRecord.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EnergyRecordUpdateManyAndReturnArgs>(args: SelectSubset<T, EnergyRecordUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EnergyRecordPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EnergyRecord.
+     * @param {EnergyRecordUpsertArgs} args - Arguments to update or create a EnergyRecord.
+     * @example
+     * // Update or create a EnergyRecord
+     * const energyRecord = await prisma.energyRecord.upsert({
+     *   create: {
+     *     // ... data to create a EnergyRecord
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EnergyRecord we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EnergyRecordUpsertArgs>(args: SelectSubset<T, EnergyRecordUpsertArgs<ExtArgs>>): Prisma__EnergyRecordClient<$Result.GetResult<Prisma.$EnergyRecordPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EnergyRecords.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnergyRecordCountArgs} args - Arguments to filter EnergyRecords to count.
+     * @example
+     * // Count the number of EnergyRecords
+     * const count = await prisma.energyRecord.count({
+     *   where: {
+     *     // ... the filter for the EnergyRecords we want to count
+     *   }
+     * })
+    **/
+    count<T extends EnergyRecordCountArgs>(
+      args?: Subset<T, EnergyRecordCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EnergyRecordCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EnergyRecord.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnergyRecordAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EnergyRecordAggregateArgs>(args: Subset<T, EnergyRecordAggregateArgs>): Prisma.PrismaPromise<GetEnergyRecordAggregateType<T>>
+
+    /**
+     * Group by EnergyRecord.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EnergyRecordGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EnergyRecordGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EnergyRecordGroupByArgs['orderBy'] }
+        : { orderBy?: EnergyRecordGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EnergyRecordGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEnergyRecordGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EnergyRecord model
+   */
+  readonly fields: EnergyRecordFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EnergyRecord.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EnergyRecordClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EnergyRecord model
+   */
+  interface EnergyRecordFieldRefs {
+    readonly id: FieldRef<"EnergyRecord", 'String'>
+    readonly userId: FieldRef<"EnergyRecord", 'String'>
+    readonly day: FieldRef<"EnergyRecord", 'Int'>
+    readonly month: FieldRef<"EnergyRecord", 'Int'>
+    readonly year: FieldRef<"EnergyRecord", 'Int'>
+    readonly energyLevel: FieldRef<"EnergyRecord", 'EnergyLevel'>
+    readonly value: FieldRef<"EnergyRecord", 'Int'>
+    readonly createdAt: FieldRef<"EnergyRecord", 'DateTime'>
+    readonly updatedAt: FieldRef<"EnergyRecord", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EnergyRecord findUnique
+   */
+  export type EnergyRecordFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyRecord
+     */
+    select?: EnergyRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyRecord
+     */
+    omit?: EnergyRecordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyRecordInclude<ExtArgs> | null
+    /**
+     * Filter, which EnergyRecord to fetch.
+     */
+    where: EnergyRecordWhereUniqueInput
+  }
+
+  /**
+   * EnergyRecord findUniqueOrThrow
+   */
+  export type EnergyRecordFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyRecord
+     */
+    select?: EnergyRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyRecord
+     */
+    omit?: EnergyRecordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyRecordInclude<ExtArgs> | null
+    /**
+     * Filter, which EnergyRecord to fetch.
+     */
+    where: EnergyRecordWhereUniqueInput
+  }
+
+  /**
+   * EnergyRecord findFirst
+   */
+  export type EnergyRecordFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyRecord
+     */
+    select?: EnergyRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyRecord
+     */
+    omit?: EnergyRecordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyRecordInclude<ExtArgs> | null
+    /**
+     * Filter, which EnergyRecord to fetch.
+     */
+    where?: EnergyRecordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EnergyRecords to fetch.
+     */
+    orderBy?: EnergyRecordOrderByWithRelationInput | EnergyRecordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EnergyRecords.
+     */
+    cursor?: EnergyRecordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EnergyRecords from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EnergyRecords.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EnergyRecords.
+     */
+    distinct?: EnergyRecordScalarFieldEnum | EnergyRecordScalarFieldEnum[]
+  }
+
+  /**
+   * EnergyRecord findFirstOrThrow
+   */
+  export type EnergyRecordFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyRecord
+     */
+    select?: EnergyRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyRecord
+     */
+    omit?: EnergyRecordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyRecordInclude<ExtArgs> | null
+    /**
+     * Filter, which EnergyRecord to fetch.
+     */
+    where?: EnergyRecordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EnergyRecords to fetch.
+     */
+    orderBy?: EnergyRecordOrderByWithRelationInput | EnergyRecordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EnergyRecords.
+     */
+    cursor?: EnergyRecordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EnergyRecords from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EnergyRecords.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EnergyRecords.
+     */
+    distinct?: EnergyRecordScalarFieldEnum | EnergyRecordScalarFieldEnum[]
+  }
+
+  /**
+   * EnergyRecord findMany
+   */
+  export type EnergyRecordFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyRecord
+     */
+    select?: EnergyRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyRecord
+     */
+    omit?: EnergyRecordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyRecordInclude<ExtArgs> | null
+    /**
+     * Filter, which EnergyRecords to fetch.
+     */
+    where?: EnergyRecordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EnergyRecords to fetch.
+     */
+    orderBy?: EnergyRecordOrderByWithRelationInput | EnergyRecordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EnergyRecords.
+     */
+    cursor?: EnergyRecordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EnergyRecords from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EnergyRecords.
+     */
+    skip?: number
+    distinct?: EnergyRecordScalarFieldEnum | EnergyRecordScalarFieldEnum[]
+  }
+
+  /**
+   * EnergyRecord create
+   */
+  export type EnergyRecordCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyRecord
+     */
+    select?: EnergyRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyRecord
+     */
+    omit?: EnergyRecordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyRecordInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EnergyRecord.
+     */
+    data: XOR<EnergyRecordCreateInput, EnergyRecordUncheckedCreateInput>
+  }
+
+  /**
+   * EnergyRecord createMany
+   */
+  export type EnergyRecordCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EnergyRecords.
+     */
+    data: EnergyRecordCreateManyInput | EnergyRecordCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EnergyRecord createManyAndReturn
+   */
+  export type EnergyRecordCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyRecord
+     */
+    select?: EnergyRecordSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyRecord
+     */
+    omit?: EnergyRecordOmit<ExtArgs> | null
+    /**
+     * The data used to create many EnergyRecords.
+     */
+    data: EnergyRecordCreateManyInput | EnergyRecordCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyRecordIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EnergyRecord update
+   */
+  export type EnergyRecordUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyRecord
+     */
+    select?: EnergyRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyRecord
+     */
+    omit?: EnergyRecordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyRecordInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EnergyRecord.
+     */
+    data: XOR<EnergyRecordUpdateInput, EnergyRecordUncheckedUpdateInput>
+    /**
+     * Choose, which EnergyRecord to update.
+     */
+    where: EnergyRecordWhereUniqueInput
+  }
+
+  /**
+   * EnergyRecord updateMany
+   */
+  export type EnergyRecordUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EnergyRecords.
+     */
+    data: XOR<EnergyRecordUpdateManyMutationInput, EnergyRecordUncheckedUpdateManyInput>
+    /**
+     * Filter which EnergyRecords to update
+     */
+    where?: EnergyRecordWhereInput
+    /**
+     * Limit how many EnergyRecords to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EnergyRecord updateManyAndReturn
+   */
+  export type EnergyRecordUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyRecord
+     */
+    select?: EnergyRecordSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyRecord
+     */
+    omit?: EnergyRecordOmit<ExtArgs> | null
+    /**
+     * The data used to update EnergyRecords.
+     */
+    data: XOR<EnergyRecordUpdateManyMutationInput, EnergyRecordUncheckedUpdateManyInput>
+    /**
+     * Filter which EnergyRecords to update
+     */
+    where?: EnergyRecordWhereInput
+    /**
+     * Limit how many EnergyRecords to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyRecordIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EnergyRecord upsert
+   */
+  export type EnergyRecordUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyRecord
+     */
+    select?: EnergyRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyRecord
+     */
+    omit?: EnergyRecordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyRecordInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EnergyRecord to update in case it exists.
+     */
+    where: EnergyRecordWhereUniqueInput
+    /**
+     * In case the EnergyRecord found by the `where` argument doesn't exist, create a new EnergyRecord with this data.
+     */
+    create: XOR<EnergyRecordCreateInput, EnergyRecordUncheckedCreateInput>
+    /**
+     * In case the EnergyRecord was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EnergyRecordUpdateInput, EnergyRecordUncheckedUpdateInput>
+  }
+
+  /**
+   * EnergyRecord delete
+   */
+  export type EnergyRecordDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyRecord
+     */
+    select?: EnergyRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyRecord
+     */
+    omit?: EnergyRecordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyRecordInclude<ExtArgs> | null
+    /**
+     * Filter which EnergyRecord to delete.
+     */
+    where: EnergyRecordWhereUniqueInput
+  }
+
+  /**
+   * EnergyRecord deleteMany
+   */
+  export type EnergyRecordDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EnergyRecords to delete
+     */
+    where?: EnergyRecordWhereInput
+    /**
+     * Limit how many EnergyRecords to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EnergyRecord without action
+   */
+  export type EnergyRecordDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EnergyRecord
+     */
+    select?: EnergyRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EnergyRecord
+     */
+    omit?: EnergyRecordOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnergyRecordInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -6882,6 +8179,21 @@ export namespace Prisma {
   };
 
   export type VerificationTokenScalarFieldEnum = (typeof VerificationTokenScalarFieldEnum)[keyof typeof VerificationTokenScalarFieldEnum]
+
+
+  export const EnergyRecordScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    day: 'day',
+    month: 'month',
+    year: 'year',
+    energyLevel: 'energyLevel',
+    value: 'value',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type EnergyRecordScalarFieldEnum = (typeof EnergyRecordScalarFieldEnum)[keyof typeof EnergyRecordScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -6998,6 +8310,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'EnergyLevel'
+   */
+  export type EnumEnergyLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EnergyLevel'>
+    
+
+
+  /**
+   * Reference to a field of type 'EnergyLevel[]'
+   */
+  export type ListEnumEnergyLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EnergyLevel[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -7027,6 +8353,7 @@ export namespace Prisma {
     tasks?: TaskListRelationFilter
     Account?: AccountListRelationFilter
     Session?: SessionListRelationFilter
+    EnergyRecord?: EnergyRecordListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -7039,6 +8366,7 @@ export namespace Prisma {
     tasks?: TaskOrderByRelationAggregateInput
     Account?: AccountOrderByRelationAggregateInput
     Session?: SessionOrderByRelationAggregateInput
+    EnergyRecord?: EnergyRecordOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -7054,6 +8382,7 @@ export namespace Prisma {
     tasks?: TaskListRelationFilter
     Account?: AccountListRelationFilter
     Session?: SessionListRelationFilter
+    EnergyRecord?: EnergyRecordListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -7351,6 +8680,84 @@ export namespace Prisma {
     expires?: DateTimeWithAggregatesFilter<"VerificationToken"> | Date | string
   }
 
+  export type EnergyRecordWhereInput = {
+    AND?: EnergyRecordWhereInput | EnergyRecordWhereInput[]
+    OR?: EnergyRecordWhereInput[]
+    NOT?: EnergyRecordWhereInput | EnergyRecordWhereInput[]
+    id?: StringFilter<"EnergyRecord"> | string
+    userId?: StringFilter<"EnergyRecord"> | string
+    day?: IntFilter<"EnergyRecord"> | number
+    month?: IntFilter<"EnergyRecord"> | number
+    year?: IntFilter<"EnergyRecord"> | number
+    energyLevel?: EnumEnergyLevelFilter<"EnergyRecord"> | $Enums.EnergyLevel
+    value?: IntFilter<"EnergyRecord"> | number
+    createdAt?: DateTimeFilter<"EnergyRecord"> | Date | string
+    updatedAt?: DateTimeFilter<"EnergyRecord"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type EnergyRecordOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    day?: SortOrder
+    month?: SortOrder
+    year?: SortOrder
+    energyLevel?: SortOrder
+    value?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type EnergyRecordWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_day_month_year?: EnergyRecordUserId_day_month_yearCompoundUniqueInput
+    AND?: EnergyRecordWhereInput | EnergyRecordWhereInput[]
+    OR?: EnergyRecordWhereInput[]
+    NOT?: EnergyRecordWhereInput | EnergyRecordWhereInput[]
+    userId?: StringFilter<"EnergyRecord"> | string
+    day?: IntFilter<"EnergyRecord"> | number
+    month?: IntFilter<"EnergyRecord"> | number
+    year?: IntFilter<"EnergyRecord"> | number
+    energyLevel?: EnumEnergyLevelFilter<"EnergyRecord"> | $Enums.EnergyLevel
+    value?: IntFilter<"EnergyRecord"> | number
+    createdAt?: DateTimeFilter<"EnergyRecord"> | Date | string
+    updatedAt?: DateTimeFilter<"EnergyRecord"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "userId_day_month_year">
+
+  export type EnergyRecordOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    day?: SortOrder
+    month?: SortOrder
+    year?: SortOrder
+    energyLevel?: SortOrder
+    value?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: EnergyRecordCountOrderByAggregateInput
+    _avg?: EnergyRecordAvgOrderByAggregateInput
+    _max?: EnergyRecordMaxOrderByAggregateInput
+    _min?: EnergyRecordMinOrderByAggregateInput
+    _sum?: EnergyRecordSumOrderByAggregateInput
+  }
+
+  export type EnergyRecordScalarWhereWithAggregatesInput = {
+    AND?: EnergyRecordScalarWhereWithAggregatesInput | EnergyRecordScalarWhereWithAggregatesInput[]
+    OR?: EnergyRecordScalarWhereWithAggregatesInput[]
+    NOT?: EnergyRecordScalarWhereWithAggregatesInput | EnergyRecordScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EnergyRecord"> | string
+    userId?: StringWithAggregatesFilter<"EnergyRecord"> | string
+    day?: IntWithAggregatesFilter<"EnergyRecord"> | number
+    month?: IntWithAggregatesFilter<"EnergyRecord"> | number
+    year?: IntWithAggregatesFilter<"EnergyRecord"> | number
+    energyLevel?: EnumEnergyLevelWithAggregatesFilter<"EnergyRecord"> | $Enums.EnergyLevel
+    value?: IntWithAggregatesFilter<"EnergyRecord"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"EnergyRecord"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"EnergyRecord"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -7361,6 +8768,7 @@ export namespace Prisma {
     tasks?: TaskCreateNestedManyWithoutUserInput
     Account?: AccountCreateNestedManyWithoutUserInput
     Session?: SessionCreateNestedManyWithoutUserInput
+    EnergyRecord?: EnergyRecordCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -7373,6 +8781,7 @@ export namespace Prisma {
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     Account?: AccountUncheckedCreateNestedManyWithoutUserInput
     Session?: SessionUncheckedCreateNestedManyWithoutUserInput
+    EnergyRecord?: EnergyRecordUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -7385,6 +8794,7 @@ export namespace Prisma {
     tasks?: TaskUpdateManyWithoutUserNestedInput
     Account?: AccountUpdateManyWithoutUserNestedInput
     Session?: SessionUpdateManyWithoutUserNestedInput
+    EnergyRecord?: EnergyRecordUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -7397,6 +8807,7 @@ export namespace Prisma {
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     Account?: AccountUncheckedUpdateManyWithoutUserNestedInput
     Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    EnergyRecord?: EnergyRecordUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -7717,6 +9128,89 @@ export namespace Prisma {
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type EnergyRecordCreateInput = {
+    id?: string
+    day: number
+    month: number
+    year: number
+    energyLevel: $Enums.EnergyLevel
+    value: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutEnergyRecordInput
+  }
+
+  export type EnergyRecordUncheckedCreateInput = {
+    id?: string
+    userId: string
+    day: number
+    month: number
+    year: number
+    energyLevel: $Enums.EnergyLevel
+    value: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EnergyRecordUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    day?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    year?: IntFieldUpdateOperationsInput | number
+    energyLevel?: EnumEnergyLevelFieldUpdateOperationsInput | $Enums.EnergyLevel
+    value?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutEnergyRecordNestedInput
+  }
+
+  export type EnergyRecordUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    day?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    year?: IntFieldUpdateOperationsInput | number
+    energyLevel?: EnumEnergyLevelFieldUpdateOperationsInput | $Enums.EnergyLevel
+    value?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EnergyRecordCreateManyInput = {
+    id?: string
+    userId: string
+    day: number
+    month: number
+    year: number
+    energyLevel: $Enums.EnergyLevel
+    value: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EnergyRecordUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    day?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    year?: IntFieldUpdateOperationsInput | number
+    energyLevel?: EnumEnergyLevelFieldUpdateOperationsInput | $Enums.EnergyLevel
+    value?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EnergyRecordUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    day?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    year?: IntFieldUpdateOperationsInput | number
+    energyLevel?: EnumEnergyLevelFieldUpdateOperationsInput | $Enums.EnergyLevel
+    value?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -7776,6 +9270,12 @@ export namespace Prisma {
     none?: SessionWhereInput
   }
 
+  export type EnergyRecordListRelationFilter = {
+    every?: EnergyRecordWhereInput
+    some?: EnergyRecordWhereInput
+    none?: EnergyRecordWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -7790,6 +9290,10 @@ export namespace Prisma {
   }
 
   export type SessionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EnergyRecordOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -8122,6 +9626,107 @@ export namespace Prisma {
     expires?: SortOrder
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type EnumEnergyLevelFilter<$PrismaModel = never> = {
+    equals?: $Enums.EnergyLevel | EnumEnergyLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.EnergyLevel[] | ListEnumEnergyLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EnergyLevel[] | ListEnumEnergyLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumEnergyLevelFilter<$PrismaModel> | $Enums.EnergyLevel
+  }
+
+  export type EnergyRecordUserId_day_month_yearCompoundUniqueInput = {
+    userId: string
+    day: number
+    month: number
+    year: number
+  }
+
+  export type EnergyRecordCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    day?: SortOrder
+    month?: SortOrder
+    year?: SortOrder
+    energyLevel?: SortOrder
+    value?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnergyRecordAvgOrderByAggregateInput = {
+    day?: SortOrder
+    month?: SortOrder
+    year?: SortOrder
+    value?: SortOrder
+  }
+
+  export type EnergyRecordMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    day?: SortOrder
+    month?: SortOrder
+    year?: SortOrder
+    energyLevel?: SortOrder
+    value?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnergyRecordMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    day?: SortOrder
+    month?: SortOrder
+    year?: SortOrder
+    energyLevel?: SortOrder
+    value?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnergyRecordSumOrderByAggregateInput = {
+    day?: SortOrder
+    month?: SortOrder
+    year?: SortOrder
+    value?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type EnumEnergyLevelWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EnergyLevel | EnumEnergyLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.EnergyLevel[] | ListEnumEnergyLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EnergyLevel[] | ListEnumEnergyLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumEnergyLevelWithAggregatesFilter<$PrismaModel> | $Enums.EnergyLevel
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEnergyLevelFilter<$PrismaModel>
+    _max?: NestedEnumEnergyLevelFilter<$PrismaModel>
+  }
+
   export type TaskCreateNestedManyWithoutUserInput = {
     create?: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput> | TaskCreateWithoutUserInput[] | TaskUncheckedCreateWithoutUserInput[]
     connectOrCreate?: TaskCreateOrConnectWithoutUserInput | TaskCreateOrConnectWithoutUserInput[]
@@ -8143,6 +9748,13 @@ export namespace Prisma {
     connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
+  export type EnergyRecordCreateNestedManyWithoutUserInput = {
+    create?: XOR<EnergyRecordCreateWithoutUserInput, EnergyRecordUncheckedCreateWithoutUserInput> | EnergyRecordCreateWithoutUserInput[] | EnergyRecordUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EnergyRecordCreateOrConnectWithoutUserInput | EnergyRecordCreateOrConnectWithoutUserInput[]
+    createMany?: EnergyRecordCreateManyUserInputEnvelope
+    connect?: EnergyRecordWhereUniqueInput | EnergyRecordWhereUniqueInput[]
+  }
+
   export type TaskUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput> | TaskCreateWithoutUserInput[] | TaskUncheckedCreateWithoutUserInput[]
     connectOrCreate?: TaskCreateOrConnectWithoutUserInput | TaskCreateOrConnectWithoutUserInput[]
@@ -8162,6 +9774,13 @@ export namespace Prisma {
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
     createMany?: SessionCreateManyUserInputEnvelope
     connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+  }
+
+  export type EnergyRecordUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<EnergyRecordCreateWithoutUserInput, EnergyRecordUncheckedCreateWithoutUserInput> | EnergyRecordCreateWithoutUserInput[] | EnergyRecordUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EnergyRecordCreateOrConnectWithoutUserInput | EnergyRecordCreateOrConnectWithoutUserInput[]
+    createMany?: EnergyRecordCreateManyUserInputEnvelope
+    connect?: EnergyRecordWhereUniqueInput | EnergyRecordWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -8218,6 +9837,20 @@ export namespace Prisma {
     deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
+  export type EnergyRecordUpdateManyWithoutUserNestedInput = {
+    create?: XOR<EnergyRecordCreateWithoutUserInput, EnergyRecordUncheckedCreateWithoutUserInput> | EnergyRecordCreateWithoutUserInput[] | EnergyRecordUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EnergyRecordCreateOrConnectWithoutUserInput | EnergyRecordCreateOrConnectWithoutUserInput[]
+    upsert?: EnergyRecordUpsertWithWhereUniqueWithoutUserInput | EnergyRecordUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: EnergyRecordCreateManyUserInputEnvelope
+    set?: EnergyRecordWhereUniqueInput | EnergyRecordWhereUniqueInput[]
+    disconnect?: EnergyRecordWhereUniqueInput | EnergyRecordWhereUniqueInput[]
+    delete?: EnergyRecordWhereUniqueInput | EnergyRecordWhereUniqueInput[]
+    connect?: EnergyRecordWhereUniqueInput | EnergyRecordWhereUniqueInput[]
+    update?: EnergyRecordUpdateWithWhereUniqueWithoutUserInput | EnergyRecordUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: EnergyRecordUpdateManyWithWhereWithoutUserInput | EnergyRecordUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: EnergyRecordScalarWhereInput | EnergyRecordScalarWhereInput[]
+  }
+
   export type TaskUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<TaskCreateWithoutUserInput, TaskUncheckedCreateWithoutUserInput> | TaskCreateWithoutUserInput[] | TaskUncheckedCreateWithoutUserInput[]
     connectOrCreate?: TaskCreateOrConnectWithoutUserInput | TaskCreateOrConnectWithoutUserInput[]
@@ -8258,6 +9891,20 @@ export namespace Prisma {
     update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
+  }
+
+  export type EnergyRecordUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<EnergyRecordCreateWithoutUserInput, EnergyRecordUncheckedCreateWithoutUserInput> | EnergyRecordCreateWithoutUserInput[] | EnergyRecordUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EnergyRecordCreateOrConnectWithoutUserInput | EnergyRecordCreateOrConnectWithoutUserInput[]
+    upsert?: EnergyRecordUpsertWithWhereUniqueWithoutUserInput | EnergyRecordUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: EnergyRecordCreateManyUserInputEnvelope
+    set?: EnergyRecordWhereUniqueInput | EnergyRecordWhereUniqueInput[]
+    disconnect?: EnergyRecordWhereUniqueInput | EnergyRecordWhereUniqueInput[]
+    delete?: EnergyRecordWhereUniqueInput | EnergyRecordWhereUniqueInput[]
+    connect?: EnergyRecordWhereUniqueInput | EnergyRecordWhereUniqueInput[]
+    update?: EnergyRecordUpdateWithWhereUniqueWithoutUserInput | EnergyRecordUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: EnergyRecordUpdateManyWithWhereWithoutUserInput | EnergyRecordUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: EnergyRecordScalarWhereInput | EnergyRecordScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutTasksInput = {
@@ -8324,6 +9971,32 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutSessionInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSessionInput, UserUpdateWithoutSessionInput>, UserUncheckedUpdateWithoutSessionInput>
+  }
+
+  export type UserCreateNestedOneWithoutEnergyRecordInput = {
+    create?: XOR<UserCreateWithoutEnergyRecordInput, UserUncheckedCreateWithoutEnergyRecordInput>
+    connectOrCreate?: UserCreateOrConnectWithoutEnergyRecordInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type EnumEnergyLevelFieldUpdateOperationsInput = {
+    set?: $Enums.EnergyLevel
+  }
+
+  export type UserUpdateOneRequiredWithoutEnergyRecordNestedInput = {
+    create?: XOR<UserCreateWithoutEnergyRecordInput, UserUncheckedCreateWithoutEnergyRecordInput>
+    connectOrCreate?: UserCreateOrConnectWithoutEnergyRecordInput
+    upsert?: UserUpsertWithoutEnergyRecordInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutEnergyRecordInput, UserUpdateWithoutEnergyRecordInput>, UserUncheckedUpdateWithoutEnergyRecordInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -8538,6 +10211,50 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedEnumEnergyLevelFilter<$PrismaModel = never> = {
+    equals?: $Enums.EnergyLevel | EnumEnergyLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.EnergyLevel[] | ListEnumEnergyLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EnergyLevel[] | ListEnumEnergyLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumEnergyLevelFilter<$PrismaModel> | $Enums.EnergyLevel
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedEnumEnergyLevelWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EnergyLevel | EnumEnergyLevelFieldRefInput<$PrismaModel>
+    in?: $Enums.EnergyLevel[] | ListEnumEnergyLevelFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EnergyLevel[] | ListEnumEnergyLevelFieldRefInput<$PrismaModel>
+    not?: NestedEnumEnergyLevelWithAggregatesFilter<$PrismaModel> | $Enums.EnergyLevel
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEnergyLevelFilter<$PrismaModel>
+    _max?: NestedEnumEnergyLevelFilter<$PrismaModel>
+  }
+
   export type TaskCreateWithoutUserInput = {
     id?: string
     title: string
@@ -8634,6 +10351,38 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type EnergyRecordCreateWithoutUserInput = {
+    id?: string
+    day: number
+    month: number
+    year: number
+    energyLevel: $Enums.EnergyLevel
+    value: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EnergyRecordUncheckedCreateWithoutUserInput = {
+    id?: string
+    day: number
+    month: number
+    year: number
+    energyLevel: $Enums.EnergyLevel
+    value: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EnergyRecordCreateOrConnectWithoutUserInput = {
+    where: EnergyRecordWhereUniqueInput
+    create: XOR<EnergyRecordCreateWithoutUserInput, EnergyRecordUncheckedCreateWithoutUserInput>
+  }
+
+  export type EnergyRecordCreateManyUserInputEnvelope = {
+    data: EnergyRecordCreateManyUserInput | EnergyRecordCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TaskUpsertWithWhereUniqueWithoutUserInput = {
     where: TaskWhereUniqueInput
     update: XOR<TaskUpdateWithoutUserInput, TaskUncheckedUpdateWithoutUserInput>
@@ -8727,6 +10476,37 @@ export namespace Prisma {
     expires?: DateTimeFilter<"Session"> | Date | string
   }
 
+  export type EnergyRecordUpsertWithWhereUniqueWithoutUserInput = {
+    where: EnergyRecordWhereUniqueInput
+    update: XOR<EnergyRecordUpdateWithoutUserInput, EnergyRecordUncheckedUpdateWithoutUserInput>
+    create: XOR<EnergyRecordCreateWithoutUserInput, EnergyRecordUncheckedCreateWithoutUserInput>
+  }
+
+  export type EnergyRecordUpdateWithWhereUniqueWithoutUserInput = {
+    where: EnergyRecordWhereUniqueInput
+    data: XOR<EnergyRecordUpdateWithoutUserInput, EnergyRecordUncheckedUpdateWithoutUserInput>
+  }
+
+  export type EnergyRecordUpdateManyWithWhereWithoutUserInput = {
+    where: EnergyRecordScalarWhereInput
+    data: XOR<EnergyRecordUpdateManyMutationInput, EnergyRecordUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type EnergyRecordScalarWhereInput = {
+    AND?: EnergyRecordScalarWhereInput | EnergyRecordScalarWhereInput[]
+    OR?: EnergyRecordScalarWhereInput[]
+    NOT?: EnergyRecordScalarWhereInput | EnergyRecordScalarWhereInput[]
+    id?: StringFilter<"EnergyRecord"> | string
+    userId?: StringFilter<"EnergyRecord"> | string
+    day?: IntFilter<"EnergyRecord"> | number
+    month?: IntFilter<"EnergyRecord"> | number
+    year?: IntFilter<"EnergyRecord"> | number
+    energyLevel?: EnumEnergyLevelFilter<"EnergyRecord"> | $Enums.EnergyLevel
+    value?: IntFilter<"EnergyRecord"> | number
+    createdAt?: DateTimeFilter<"EnergyRecord"> | Date | string
+    updatedAt?: DateTimeFilter<"EnergyRecord"> | Date | string
+  }
+
   export type UserCreateWithoutTasksInput = {
     id?: string
     email: string
@@ -8736,6 +10516,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     Account?: AccountCreateNestedManyWithoutUserInput
     Session?: SessionCreateNestedManyWithoutUserInput
+    EnergyRecord?: EnergyRecordCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTasksInput = {
@@ -8747,6 +10528,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     Account?: AccountUncheckedCreateNestedManyWithoutUserInput
     Session?: SessionUncheckedCreateNestedManyWithoutUserInput
+    EnergyRecord?: EnergyRecordUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTasksInput = {
@@ -8774,6 +10556,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Account?: AccountUpdateManyWithoutUserNestedInput
     Session?: SessionUpdateManyWithoutUserNestedInput
+    EnergyRecord?: EnergyRecordUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTasksInput = {
@@ -8785,6 +10568,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Account?: AccountUncheckedUpdateManyWithoutUserNestedInput
     Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    EnergyRecord?: EnergyRecordUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountInput = {
@@ -8796,6 +10580,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     tasks?: TaskCreateNestedManyWithoutUserInput
     Session?: SessionCreateNestedManyWithoutUserInput
+    EnergyRecord?: EnergyRecordCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountInput = {
@@ -8807,6 +10592,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     Session?: SessionUncheckedCreateNestedManyWithoutUserInput
+    EnergyRecord?: EnergyRecordUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountInput = {
@@ -8834,6 +10620,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tasks?: TaskUpdateManyWithoutUserNestedInput
     Session?: SessionUpdateManyWithoutUserNestedInput
+    EnergyRecord?: EnergyRecordUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountInput = {
@@ -8845,6 +10632,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    EnergyRecord?: EnergyRecordUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionInput = {
@@ -8856,6 +10644,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     tasks?: TaskCreateNestedManyWithoutUserInput
     Account?: AccountCreateNestedManyWithoutUserInput
+    EnergyRecord?: EnergyRecordCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionInput = {
@@ -8867,6 +10656,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
     Account?: AccountUncheckedCreateNestedManyWithoutUserInput
+    EnergyRecord?: EnergyRecordUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionInput = {
@@ -8894,6 +10684,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tasks?: TaskUpdateManyWithoutUserNestedInput
     Account?: AccountUpdateManyWithoutUserNestedInput
+    EnergyRecord?: EnergyRecordUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionInput = {
@@ -8905,6 +10696,71 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
     Account?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    EnergyRecord?: EnergyRecordUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutEnergyRecordInput = {
+    id?: string
+    email: string
+    name?: string | null
+    password: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    Account?: AccountCreateNestedManyWithoutUserInput
+    Session?: SessionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutEnergyRecordInput = {
+    id?: string
+    email: string
+    name?: string | null
+    password: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    Account?: AccountUncheckedCreateNestedManyWithoutUserInput
+    Session?: SessionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutEnergyRecordInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutEnergyRecordInput, UserUncheckedCreateWithoutEnergyRecordInput>
+  }
+
+  export type UserUpsertWithoutEnergyRecordInput = {
+    update: XOR<UserUpdateWithoutEnergyRecordInput, UserUncheckedUpdateWithoutEnergyRecordInput>
+    create: XOR<UserCreateWithoutEnergyRecordInput, UserUncheckedCreateWithoutEnergyRecordInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutEnergyRecordInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutEnergyRecordInput, UserUncheckedUpdateWithoutEnergyRecordInput>
+  }
+
+  export type UserUpdateWithoutEnergyRecordInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    Account?: AccountUpdateManyWithoutUserNestedInput
+    Session?: SessionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutEnergyRecordInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    Account?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TaskCreateManyUserInput = {
@@ -8938,6 +10794,17 @@ export namespace Prisma {
     id?: string
     sessionToken: string
     expires: Date | string
+  }
+
+  export type EnergyRecordCreateManyUserInput = {
+    id?: string
+    day: number
+    month: number
+    year: number
+    energyLevel: $Enums.EnergyLevel
+    value: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type TaskUpdateWithoutUserInput = {
@@ -9037,6 +10904,39 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionToken?: StringFieldUpdateOperationsInput | string
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EnergyRecordUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    day?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    year?: IntFieldUpdateOperationsInput | number
+    energyLevel?: EnumEnergyLevelFieldUpdateOperationsInput | $Enums.EnergyLevel
+    value?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EnergyRecordUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    day?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    year?: IntFieldUpdateOperationsInput | number
+    energyLevel?: EnumEnergyLevelFieldUpdateOperationsInput | $Enums.EnergyLevel
+    value?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EnergyRecordUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    day?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    year?: IntFieldUpdateOperationsInput | number
+    energyLevel?: EnumEnergyLevelFieldUpdateOperationsInput | $Enums.EnergyLevel
+    value?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

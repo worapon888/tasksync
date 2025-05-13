@@ -171,6 +171,18 @@ exports.Prisma.VerificationTokenScalarFieldEnum = {
   expires: 'expires'
 };
 
+exports.Prisma.EnergyRecordScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  day: 'day',
+  month: 'month',
+  year: 'year',
+  energyLevel: 'energyLevel',
+  value: 'value',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -210,12 +222,19 @@ exports.TaskPriority = exports.$Enums.TaskPriority = {
   high: 'high'
 };
 
+exports.EnergyLevel = exports.$Enums.EnergyLevel = {
+  HIGH: 'HIGH',
+  MEDIUM: 'MEDIUM',
+  LOW: 'LOW'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Task: 'Task',
   Account: 'Account',
   Session: 'Session',
-  VerificationToken: 'VerificationToken'
+  VerificationToken: 'VerificationToken',
+  EnergyRecord: 'EnergyRecord'
 };
 
 /**

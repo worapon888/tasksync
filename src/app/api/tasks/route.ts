@@ -13,15 +13,29 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const mode = searchParams.get("mode");
 
-  const isValidMode = Object.values(TaskMode).includes(mode as TaskMode);
-  if (!mode || !isValidMode) {
-    return NextResponse.json({ error: "Invalid mode" }, { status: 400 });
+  if (mode) {
+    const isValidMode = Object.values(TaskMode).includes(mode as TaskMode);
+    if (!isValidMode) {
+      return NextResponse.json({ error: "Invalid mode" }, { status: 400 });
+    }
+
+    const tasks = await prisma.task.findMany({
+      where: {
+        userId: session.user.id,
+        mode: mode as TaskMode,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return NextResponse.json({ tasks });
   }
 
+  // ✅ fallback: ถ้าไม่ส่ง mode ให้ดึงทั้งหมด
   const tasks = await prisma.task.findMany({
     where: {
       userId: session.user.id,
-      mode: mode as TaskMode,
     },
     orderBy: {
       createdAt: "desc",
@@ -33,17 +47,12 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
-  console.log("SESSION:", session);
-
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const body = await req.json();
-  console.log("BODY RECEIVED:", body);
-
-  // ✅ แก้ตรงนี้: ดึงจาก body.task
-  const task = body.task || body; // รองรับทั้งแบบเก่าและใหม่
+  const task = body.task || body;
 
   const { title, description, dueDate, cover, priority, mode } = task;
 
@@ -75,6 +84,48 @@ export async function POST(req: Request) {
         userId: session.user.id,
       },
     });
+
+    // ✅ บันทึก EnergyRecord ถ้ามี dueDate
+    if (newTask.dueDate) {
+      const due = new Date(newTask.dueDate);
+
+      const energyLevel =
+        newTask.priority === "high"
+          ? "HIGH"
+          : newTask.priority === "medium"
+          ? "MEDIUM"
+          : "LOW";
+
+      const value =
+        newTask.priority === "high"
+          ? 100
+          : newTask.priority === "medium"
+          ? 60
+          : 30;
+
+      await prisma.energyRecord.upsert({
+        where: {
+          userId_day_month_year: {
+            userId: session.user.id,
+            day: due.getDate(),
+            month: due.getMonth(),
+            year: due.getFullYear(),
+          },
+        },
+        update: {
+          energyLevel,
+          value,
+        },
+        create: {
+          userId: session.user.id,
+          day: due.getDate(),
+          month: due.getMonth(),
+          year: due.getFullYear(),
+          energyLevel,
+          value,
+        },
+      });
+    }
 
     return NextResponse.json({ task: newTask });
   } catch (error) {

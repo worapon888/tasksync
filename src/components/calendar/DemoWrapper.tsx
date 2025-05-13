@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
 import { useSnack } from "@/context/SnackProvider";
+import { useEnergy } from "@/context/EnergyContext"; // ✅ import context
 import { ContinuousCalendar } from "@/components/calendar/ContinuousCalendar";
 
 const monthNames = [
@@ -20,6 +22,22 @@ const monthNames = [
 
 export default function DemoWrapper() {
   const { createSnack } = useSnack();
+  const { setEnergyData } = useEnergy(); // ✅ ใช้งาน context
+
+  // ✅ โหลด EnergyRecord มาใส่ใน context
+  useEffect(() => {
+    const fetchEnergy = async () => {
+      try {
+        const res = await fetch("/api/energy-records");
+        const data = await res.json();
+        setEnergyData(data.records); // สมมุติว่า response คือ { records: [...] }
+      } catch (error) {
+        console.error("Failed to load energy data", error);
+      }
+    };
+
+    fetchEnergy();
+  }, []);
 
   const onClickHandler = (day: number, month: number, year: number) => {
     const snackMessage = `Clicked on ${monthNames[month]} ${day}, ${year}`;

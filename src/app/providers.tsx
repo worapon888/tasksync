@@ -6,6 +6,7 @@ import { SnackProvider } from "@/context/SnackProvider";
 import { TaskModeProvider } from "@/context/TaskModeContext";
 import { TaskProvider } from "@/context/TaskContext";
 import { DashboardProvider } from "@/context/DashboardContext"; // ✅ import เพิ่ม
+import { EnergyProvider } from "@/context/EnergyContext";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -19,7 +20,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
         >
           <TaskModeProvider>
             <TaskProvider>
-              <DashboardProvider>{children}</DashboardProvider>{" "}
+              <DashboardProvider>
+                <EnergyProvider>{children}</EnergyProvider>
+              </DashboardProvider>
               {/* ✅ เพิ่มตรงนี้ */}
             </TaskProvider>
           </TaskModeProvider>

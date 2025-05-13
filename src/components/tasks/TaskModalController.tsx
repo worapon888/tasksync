@@ -4,6 +4,7 @@ import { useState } from "react";
 import NewTaskModal from "./NewTaskModal";
 import { TaskMode } from "@/generated/prisma";
 import { Task } from "@/types/task";
+import { useEnergy } from "@/context/EnergyContext";
 
 type Props = {
   mode: TaskMode;
@@ -13,6 +14,7 @@ type Props = {
 export default function TaskModalController({ mode, onSuccess }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const { refetchEnergy } = useEnergy();
 
   const openForNew = () => {
     setEditingTask(null);
@@ -35,7 +37,8 @@ export default function TaskModalController({ mode, onSuccess }: Props) {
     });
 
     if (res.ok) {
-      setIsOpen(false); // ✅ ปิด modal
+      setIsOpen(false);
+      await refetchEnergy(); // ✅ ปิด modal--
       onSuccess(); // ✅ รีเฟรช task list หรือ reload UI
     } else {
       console.error("❌ Failed to submit task (controller)");

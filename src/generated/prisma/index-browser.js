@@ -125,6 +125,7 @@ exports.Prisma.UserScalarFieldEnum = {
   email: 'email',
   name: 'name',
   password: 'password',
+  image: 'image',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -183,6 +184,15 @@ exports.Prisma.EnergyRecordScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.UserSettingScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  defaultView: 'defaultView',
+  showEmotionalStatus: 'showEmotionalStatus',
+  taskReminders: 'taskReminders',
+  emotionalSuggestions: 'emotionalSuggestions'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -234,7 +244,8 @@ exports.Prisma.ModelName = {
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken',
-  EnergyRecord: 'EnergyRecord'
+  EnergyRecord: 'EnergyRecord',
+  UserSetting: 'UserSetting'
 };
 
 /**

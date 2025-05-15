@@ -18,26 +18,28 @@ export default function RegisterPage() {
     e.preventDefault();
     setError("");
 
-    try {
-      const res = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+    const res = await fetch("/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Registration failed");
+    const data = await res.json();
 
-      // ✅ auto login with next-auth
-      await signIn("credentials", {
-        email: form.email,
-        password: form.password,
-        callbackUrl: "/dashboard",
-      });
-    } catch (err) {
-      const error = err as Error;
-      setError(error.message);
+    if (!res.ok) {
+      setError(data.error || "Something went wrong");
+      return;
     }
+
+    console.log("🔁 สมัครเสร็จ กำลังล็อกอิน");
+
+    // ✅ redirect = true ปลอดภัยแน่นอน ไม่ใช้ res.url เอง
+    await signIn("credentials", {
+      email: form.email,
+      password: form.password,
+      redirect: true,
+      callbackUrl: "/dashboard",
+    });
   };
 
   return (
@@ -66,7 +68,7 @@ export default function RegisterPage() {
                 name="name"
                 value={form.name}
                 onChange={handleChange}
-                className="w-full border dark:border-slate-500 border-gray-300 rounded-lg px-4 py-3 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full border dark:border-slate-500 border-gray-300 rounded-lg px-4 py-3 pl-10 text-sm"
                 placeholder="Your name"
                 required
               />
@@ -82,7 +84,7 @@ export default function RegisterPage() {
                 name="email"
                 value={form.email}
                 onChange={handleChange}
-                className="w-full border dark:border-slate-500 border-gray-300 rounded-lg px-4 py-3 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full border dark:border-slate-500 border-gray-300 rounded-lg px-4 py-3 pl-10 text-sm"
                 placeholder="you@example.com"
                 required
               />
@@ -98,7 +100,7 @@ export default function RegisterPage() {
                 name="password"
                 value={form.password}
                 onChange={handleChange}
-                className="w-full border dark:border-slate-500 border-gray-300 rounded-lg px-4 py-3 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                className="w-full border dark:border-slate-500 border-gray-300 rounded-lg px-4 py-3 pl-10 text-sm"
                 placeholder="••••••••"
                 required
               />
@@ -110,7 +112,7 @@ export default function RegisterPage() {
 
           <button
             type="submit"
-            className="w-full bg-black dark:bg-slate-600 text-white py-3 rounded-lg font-medium hover:opacity-90 transition cursor-pointer"
+            className="w-full bg-black dark:bg-slate-600 text-white py-3 rounded-lg font-medium hover:opacity-90 transition"
           >
             Create Account
           </button>
@@ -124,24 +126,20 @@ export default function RegisterPage() {
           <button
             type="button"
             onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-            className="w-full flex items-center cursor-pointer justify-center gap-3 bg-[#fff] border border-gray-300 text-gray-800 font-medium py-2 rounded-lg hover:shadow-md hover:scale-[1.02] transition-all"
+            className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 text-gray-800 py-2 rounded-lg hover:shadow-md"
           >
             <Image
               src="https://img.icons8.com/color/48/000000/google-logo.png"
               alt="Google"
               width={20}
               height={20}
-              className="w-5 h-5"
             />
             <span className="text-sm font-semibold">Continue with Google</span>
           </button>
 
           <p className="text-center text-sm text-gray-500">
             Already have an account?{" "}
-            <Link
-              href="/login"
-              className="text-blue-600 hover:underline cursor-pointer"
-            >
+            <Link href="/login" className="text-blue-600 hover:underline">
               Sign in
             </Link>
           </p>

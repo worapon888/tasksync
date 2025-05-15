@@ -14,15 +14,21 @@ import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
+import { useProfile } from "@/context/ProfileContext";
 
 export default function Sidebar() {
   const pathname = usePathname();
   const { data: session } = useSession();
 
   const user = session?.user;
+  const { profile } = useProfile();
 
   return (
-    <aside className="absolute z-40 top-6 left-6 flex flex-col items-center justify-between h-[calc(75vh-1rem)] w-20 bg-white/80 dark:bg-[#242739]/40 rounded-3xl py-6 drop-shadow-2xl">
+    <aside
+      className="absolute z-40 top-6 left-6 flex flex-col items-center justify-between 
+  min-h-[calc(100vh-3rem)] w-20 bg-white/80 dark:bg-[#242739]/40 
+  rounded-3xl py-6 drop-shadow-2xl overflow-hidden"
+    >
       {/* Top icons */}
       <div className="flex flex-col items-center mt-10 space-y-10">
         <SidebarIcon href="/" icon={Home} pathname={pathname} />
@@ -42,9 +48,9 @@ export default function Sidebar() {
 
       {user ? (
         <div className="flex flex-col items-center space-y-10">
-          {user.image ? (
+          {profile.image ? (
             <Image
-              src={user.image}
+              src={profile.image || "/default-avatar.png"}
               alt="Avatar"
               width={32} // ✅ ใหญ่ขึ้น
               height={32}

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { IncomingTask } from "@/types/task";
+import { TaskStatus } from "@/generated/prisma";
 
 type TasksByColumn = Record<string, IncomingTask[]>;
 
@@ -16,8 +17,8 @@ export async function POST(req: Request) {
           data: {
             title: task.title,
             description: task.description || "",
-            dueDate: task.date ? new Date(task.date) : null,
-            status: column,
+            dueDate: task.dueDate ? new Date(task.dueDate) : null,
+            status: column as TaskStatus,
             priority: "medium",
             cover: task.cover || null,
 

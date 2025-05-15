@@ -5,6 +5,7 @@ import { useSnack } from "@/context/SnackProvider";
 import { useEnergy } from "@/context/EnergyContext";
 import { ContinuousCalendar } from "@/components/calendar/ContinuousCalendar";
 import TaskModalController from "@/components/tasks/TaskModalController";
+import { useTaskMode } from "@/context/TaskModeContext";
 
 const monthNames = [
   "January",
@@ -44,9 +45,9 @@ export default function DemoWrapper() {
     createSnack(snackMessage, "success");
   };
 
-  // ✅ ใช้ TaskModalController เพื่อควบคุม modal
+  const { mode } = useTaskMode();
   const { TaskModal, handleAddTask } = TaskModalController({
-    mode: "PersonalAssistant", // หรือเปลี่ยนจาก context ก็ได้
+    mode,
     onSuccess: () => createSnack("✅ Task created!", "success"),
   });
 

@@ -20,7 +20,7 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
 }) => {
   const today = new Date();
   const dayRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [selectedMonth, setSelectedMonth] = useState<number>(0);
+  const [selectedMonth, setSelectedMonth] = useState<number>(today.getMonth());
   const { energyData, year, setYear } = useEnergy();
   const { tasks } = useTaskContext();
 
@@ -115,6 +115,10 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
     });
 
     return () => observer.disconnect();
+  }, []);
+  useEffect(() => {
+    // Scroll to today's date after mount
+    scrollToDay(today.getMonth(), today.getDate());
   }, []);
 
   return (

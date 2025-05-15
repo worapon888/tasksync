@@ -1,43 +1,62 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { prisma } from "@/lib/prisma"; // 🟢 อย่าลืมนำเข้า
+import { prisma } from "@/lib/prisma";
+import bcrypt from "bcrypt";
 
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
       credentials: {
+        name: { label: "Name", type: "text" },
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const user = {
-          id: "1",
-          name: "Demo User",
-          email: "demo@example.com",
-        };
+        const { name, email, password } = credentials ?? {};
+        if (!email || !password) return null;
 
-        if (
-          credentials?.email === "demo@example.com" &&
-          credentials?.password === "123456"
-        ) {
-          return user;
+        const existingUser = await prisma.user.findUnique({ where: { email } });
+
+        if (!existingUser) {
+          const hashed = await bcrypt.hash(password, 10);
+          const newUser = await prisma.user.create({
+            data: { email, name: name ?? "", password: hashed },
+          });
+
+          return {
+            id: newUser.id,
+            name: newUser.name,
+            email: newUser.email,
+          };
         }
-        return null;
+
+        const isValid = await bcrypt.compare(password, existingUser.password!);
+        if (!isValid) return null;
+
+        return {
+          id: existingUser.id,
+          name: existingUser.name,
+          email: existingUser.email,
+        };
       },
     }),
+
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
+
   pages: {
     signIn: "/login",
   },
+
   session: {
     strategy: "jwt",
   },
+
   callbacks: {
     async jwt({ token, user }) {
       if (user?.email) {
@@ -49,11 +68,13 @@ export const authOptions: NextAuthOptions = {
           token.id = dbUser.id;
           token.name = dbUser.name ?? "";
           token.email = dbUser.email ?? "";
-          token.picture = user.image ?? "";
+          token.picture = dbUser.image ?? user.image ?? "";
         }
       }
+
       return token;
     },
+
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
@@ -63,8 +84,9 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-    async signIn({ user }) {
-      try {
+
+    async signIn({ user, account }) {
+      if (account?.provider === "google") {
         const existingUser = await prisma.user.findUnique({
           where: { email: user.email! },
         });
@@ -74,16 +96,14 @@ export const authOptions: NextAuthOptions = {
             data: {
               email: user.email!,
               name: user.name ?? "",
-              password: "",
+              image: user.image ?? "",
+              password: "", // Google ไม่ใช้รหัสผ่าน
             },
           });
         }
-
-        return true;
-      } catch (error) {
-        console.error("SignIn Error:", error);
-        return false;
       }
+
+      return true;
     },
 
     async redirect() {

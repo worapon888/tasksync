@@ -18,15 +18,16 @@ export default function LoginPage() {
     setError("");
 
     const res = await signIn("credentials", {
-      redirect: false,
+      redirect: true,
       email,
       password,
+      callbackUrl: "/dashboard",
     });
 
     if (res?.error) {
       setError("Invalid email or password");
-    } else {
-      router.push("/dashboard");
+    } else if (res?.ok && res.url) {
+      router.push(res.url); // ✅ ใช้ res.url จาก callbackUrl
     }
   };
 

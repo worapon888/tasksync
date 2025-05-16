@@ -8,6 +8,7 @@ import { getBarColor } from "@/utils/energyUtils";
 import { daysOfWeek, monthNames } from "@/utils/constants";
 import { Select } from "@/components/ui/Select";
 import { useTaskContext } from "@/context/TaskContext";
+import clsx from "clsx";
 
 interface ContinuousCalendarProps {
   onClick?: (_day: number, _month: number, _year: number) => void;
@@ -122,7 +123,7 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
   }, []);
 
   return (
-    <div className="no-scrollbar calendar-container max-h-full overflow-y-scroll rounded-t-2xl border dark:border-white/10 border-slate-400 dark:bg-black/40 bg-white/10 pb-10 text-slate-800">
+    <div className="no-scrollbar calendar-container max-h-[70vh] sm:max-h-[80vh] overflow-y-scroll rounded-t-2xl border dark:border-white/10 border-slate-400 dark:bg-black/40 bg-white/10 pb-10 text-slate-800 ">
       <div className="sticky -top-px z-50 w-full rounded-t-2xl dark:bg-black/40 bg-black/40 backdrop-blur-[60px] px-5 pt-7 sm:px-8 sm:pt-8 shadow-[0_0_60px_-30px_rgba(0,200,255,0.3)]">
         <div className="mb-4 flex w-full flex-wrap items-center justify-between gap-6">
           <div className="flex flex-wrap gap-2 sm:gap-3">
@@ -220,19 +221,32 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
                   data-month={month}
                   data-day={day}
                   onClick={() => handleDayClick(day, month)}
-                  className="relative m-[-0.5px] group aspect-square w-full grow cursor-pointer rounded-xl border border-white/10 font-medium transition-all hover:z-20 hover:border-cyan-400 sm:-m-px sm:size-20 sm:rounded-2xl sm:border-2 lg:size-36 lg:rounded-3xl 2xl:size-40"
+                  className={clsx(
+                    "relative group cursor-pointer font-medium transition-all hover:z-20 hover:border-cyan-400",
+                    "aspect-square w-full grow",
+                    "m-[0.5px] sm:m-px",
+                    "rounded-xl sm:rounded-2xl lg:rounded-3xl",
+                    "border border-white/10 sm:border-2",
+                    "sm:size-20 md:size-24 lg:size-36 2xl:size-40"
+                  )}
                 >
                   <span
-                    className={`absolute left-1 top-1 flex items-center justify-center rounded-full text-xs sm:size-6 sm:text-sm lg:left-2 lg:top-2 lg:size-8 lg:text-base ${
+                    className={clsx(
+                      "absolute flex items-center justify-center rounded-full font-semibold",
+                      "text-[10px] sm:text-sm lg:text-base", // ปรับขนาด font
+                      "size-5 sm:size-6 lg:size-8", // ขนาดของวงกลม
+                      "left-1 top-1 sm:left-1 sm:top-1 lg:left-2 lg:top-2", // ตำแหน่ง
                       isToday(day, month)
-                        ? "bg-cyan-400 font-semibold text-white"
-                        : "bg-[#444444] text-white"
-                    } ${month < 0 ? "text-slate-400" : "text-white"}`}
+                        ? "bg-cyan-400 text-white"
+                        : "bg-[#444444] text-white",
+                      month < 0 && "text-slate-400"
+                    )}
                   >
                     {day}
                   </span>
+
                   <div className="absolute top-2 left-1/2 -translate-x-1/2 flex flex-col items-center">
-                    <div className="w-20 h-2 rounded-full bg-gray-600 overflow-hidden mb-1">
+                    <div className="w-10 h-1.5 sm:w-10 sm:h-2 rounded-full bg-gray-600 overflow-hidden mb-1">
                       <div
                         className={`h-full ${getBarColor(
                           matchEnergy?.energyLevel ?? ""
@@ -240,12 +254,13 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
                         style={{ width: `${matchEnergy?.value ?? 0}%` }}
                       />
                     </div>
-                    <p className="text-[12px] dark:text-gray-400 text-black">
+                    <p className="text-[10px] sm:text-[12px] text-black dark:text-gray-400">
                       Energy
                     </p>
                   </div>
+
                   {tasksForDay.length > 0 && (
-                    <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-[98%] max-h-[70px] space-y-1 text-[12px] text-white leading-tight text-left">
+                    <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-[96%] sm:w-[98%] max-h-[64px] sm:max-h-[70px] space-y-1 text-[10px] sm:text-[12px] text-white leading-tight text-left">
                       {tasksForDay.slice(0, 3).map((t) => {
                         const time = new Date(t.dueDate).toLocaleTimeString(
                           "th-TH",
@@ -258,17 +273,17 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
                         return (
                           <div
                             key={t.id}
-                            className="w-full rounded-md px-2 py-1 bg-gradient-to-br from-white/10 to-white/0 backdrop-blur-md shadow-inner border border-white/5"
+                            className="w-full rounded-md px-2 py-[2px] bg-gradient-to-br from-white/10 to-white/0 backdrop-blur-md shadow-inner border border-white/5"
                           >
                             <div className="flex items-center justify-between gap-2 mb-[2px]">
-                              <span className="text-white text-[10px] font-semibold truncate w-[60%]">
+                              <span className="truncate w-[60%] font-semibold text-[9px] sm:text-[10px] text-white">
                                 {t.title}
                               </span>
-                              <span className="text-cyan-400 text-[10px]">
+                              <span className="text-cyan-400 text-[9px] sm:text-[10px]">
                                 {time}
                               </span>
                             </div>
-                            <div className="flex justify-between text-[9px] text-gray-400">
+                            <div className="flex justify-between text-[8px] text-gray-400">
                               <span className="uppercase tracking-wide">
                                 {t.status}
                               </span>
@@ -280,7 +295,7 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
                         );
                       })}
                       {tasksForDay.length > 3 && (
-                        <div className="text-[8px] text-center text-gray-400 mt-1">
+                        <div className="text-center text-[8px] text-gray-400 mt-1">
                           +{tasksForDay.length - 3} more task
                           {tasksForDay.length - 3 > 1 ? "s" : ""}
                         </div>
@@ -289,7 +304,15 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
                   )}
 
                   {isNewMonth && (
-                    <span className="absolute bottom-0.5 left-0 w-full truncate px-1.5 text-sm font-semibold text-slate-300 sm:bottom-0 sm:text-lg lg:bottom-2.5 lg:left-3.5 lg:-mb-1 lg:w-fit lg:px-0 lg:text-xl 2xl:mb-[-4px] 2xl:text-2xl">
+                    <span
+                      className={clsx(
+                        "absolute font-semibold truncate text-slate-300",
+                        "left-0 bottom-1 px-1.5 w-full text-sm",
+                        "sm:bottom-0 sm:text-lg",
+                        "lg:bottom-2.5 lg:left-3.5 lg:mb-[-4px] lg:w-fit lg:px-0 lg:text-xl",
+                        "2xl:text-2xl"
+                      )}
+                    >
                       {monthNames[month]}
                     </span>
                   )}

@@ -52,13 +52,13 @@ export default function DemoWrapper() {
   });
 
   return (
-    <div className="relative flex h-screen w-full flex-col items-center justify-center px-4 pt-4">
-      <div className="relative h-full w-[80%] overflow-auto mt-10">
+    <div className="relative w-full px-4 pt-6 pb-10 flex flex-col items-center ">
+      <div className="w-full max-w-[1300px]">
         <ContinuousCalendar
           onClick={onClickHandler}
-          onAddTask={handleAddTask} // ✅ ใช้ตัวจริงที่เชื่อม modal
+          onAddTask={handleAddTask}
         />
-        {TaskModal} {/* ✅ แสดง modal จริง */}
+        {TaskModal}
       </div>
     </div>
   );

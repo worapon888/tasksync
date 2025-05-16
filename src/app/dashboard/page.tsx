@@ -5,30 +5,29 @@ import Greeing from "@/components/dashboard/Greeting";
 
 export default function DashboardPage() {
   return (
-    <div className="relative z-10 ml-0 md:ml-24 px-4 py-10 md:px-10 w-full min-h-screen overflow-auto">
-      <div className="flex flex-col xl:flex-row xl:items-stretch justify-start gap-12 max-w-[1300px] mx-auto ">
-        <div className="mb-5">
-          {/* Greeting */}
-          <div>
-            <h1 className="text-4xl font-bold text-white mb-2">
-              Good Morning!
-            </h1>
-            <p className="dark:text-slate-400 text-white mt-1">
-              Here’s your day at a glance:
-            </p>
-          </div>
-        </div>
-        <div></div>
-      </div>
-      <div className="flex flex-col xl:flex-row xl:items-stretch justify-center gap-12 max-w-[1300px] mx-auto ">
-        {/* ฝั่งซ้าย */}
-        <div className="flex-[1.2] w-full">
-          <Greeing />
+    <div className="relative z-10 px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 w-full min-h-screen overflow-auto">
+      <div className="max-w-screen-xl mx-auto">
+        {/* Greeting */}
+        <div className="mb-4 sm:mb-6 md:mb-8">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1 sm:mb-2">
+            Good Morning!
+          </h1>
+          <p className="text-white/80 dark:text-slate-400 text-sm sm:text-base">
+            Here’s your day at a glance:
+          </p>
         </div>
 
-        {/* ฝั่งขวา */}
-        <div className="flex-1 flex items-center justify-center h-full">
-          <EmotionalMeter />
+        {/* Main Grid */}
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 items-start">
+          {/* Left */}
+          <div className="w-full">
+            <Greeing />
+          </div>
+
+          {/* Right */}
+          <div className="w-full flex items-center justify-center">
+            <EmotionalMeter />
+          </div>
         </div>
       </div>
     </div>

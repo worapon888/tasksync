@@ -31,17 +31,16 @@ export default function RootLayout({
       <body className={`${interSans.variable} antialiased`}>
         <Providers>
           <div className="flex items-center justify-center p-4 sm:p-6 md:p-10 bg-[linear-gradient(180deg,_#6995e9_0%,_#ffffff_100%)] dark:bg-[linear-gradient(180deg,_#141621_0%,_#0e0c11_100%)]">
-            <div className="relative min-h-full h-full w-full rounded-2xl p-4 sm:p-6 md:p-8 backdrop-blur-2xl bg-black/30 shadow-[0_0_60px_-30px_rgba(0,200,255,0.3)] overflow-hidden">
+            <div className="relative min-h-full h-full w-full rounded-2xl p-4 sm:p-6 md:p-8 backdrop-blur-2xl bg-black/30 shadow-[0_0_60px_-30px_rgba(0,200,255,0.3)] overflow-hidden sm:overflow-visible">
               <div className="absolute -top-[10px] left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full bg-cyan-400/20 blur-[200px] pointer-events-none z-0" />
               <div className="absolute top-[-40px] left-1/2 -translate-x-1/2 w-[240px] h-[240px] rounded-full border border-cyan-400/10 opacity-20 z-0" />
 
               <ParticlesBackground />
               <Topbar />
-              <div className="relative">
+              <main className="relative z-10 flex">
                 <Sidebar />
-              </div>
-
-              <main className="relative z-10">{children}</main>
+                <div className="flex-1">{children}</div>
+              </main>
             </div>
           </div>
         </Providers>

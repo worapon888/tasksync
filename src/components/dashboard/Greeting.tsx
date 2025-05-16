@@ -76,34 +76,38 @@ export default function Greeing() {
   };
 
   return (
-    <div className="text-white min-h-screen flex flex-col justify-start space-y-8">
+    <div className="text-white  max-w-screen-xl mx-auto px-4 flex flex-col justify-start space-y-4 sm:space-y-6 md:space-y-8">
       {/* Performance Chart */}
-      <div className="grid grid-cols-5 grid-rows-6 gap-6">
-        <div className="col-span-3 row-span-3 dark:bg-black/60 bg-white/80  rounded-xl p-4">
-          <p className="text-sm text-slate-400 mb-2">Performance / 7 days</p>
-          <div className="flex justify-between items-end h-28">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-x-3 gap-y-5">
+        {/* Performance Chart */}
+        <div className="xl:col-span-3 xl:row-span-3 dark:bg-black/60 bg-white/80 rounded-xl p-4  flex flex-col justify-between">
+          <div>
+            <p className="text-sm text-slate-400 mb-2">Performance / 7 days</p>
+          </div>
+          <div className="grid grid-cols-7 gap-2 sm:gap-3 items-end h-24 sm:h-28 ">
             {["M", "T", "W", "Th", "F", "S", "S"].map((day, i) => (
               <div key={i} className="flex flex-col items-center">
                 <div
-                  className="w-2 rounded-full bg-cyan-400"
-                  style={{ height: `${10 + byDay[i] * 10}px` }}
+                  className="w-4 sm:w-5 md:w-6 rounded-full bg-cyan-400 transition-all duration-300"
+                  style={{ height: `${12 + byDay[i] * 10}px` }}
                 />
-                <span className="text-xs mt-1 text-slate-400">{day}</span>
+                <span className="text-[11px] sm:text-xs mt-1 text-slate-400">
+                  {day}
+                </span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Total Tasks */}
-        <div className="col-start-4 row-span-3 dark:bg-black/60 bg-white/80 text-slate-500 rounded-xl px-4 py-6 flex flex-col items-center justify-center dark:text-white">
+        <div className="xl:col-start-4 xl:row-span-3 dark:bg-black/60 bg-white/80 text-slate-500 rounded-xl px-4 py-6 flex flex-col items-center justify-center dark:text-white">
           <p className="text-xs text-slate-400 mb-3">Total Tasks</p>
           <h2 className="text-5xl font-extrabold">{grouped.total}</h2>
         </div>
 
-        {/* Task Detail */}
-        <div className="col-start-5 row-span-6 dark:bg-black/60 bg-white/80 rounded-xl px-4 py-6 dark:text-white text-center">
+        {/* Task Details */}
+        <div className="xl:col-start-5 xl:row-span-6 dark:bg-black/60 bg-white/80 rounded-xl px-4 py-6 dark:text-white text-center">
           <p className="text-xs text-slate-400 mb-6">Task Details</p>
-
           {[
             { label: "To Do", value: grouped.toDo, color: "text-pink-400" },
             {
@@ -122,9 +126,8 @@ export default function Greeing() {
           ))}
         </div>
 
-        {/* 4. This Week's Focus */}
-        <div className="col-span-4 row-start-4 row-span-3 bg-[#009CA9]/60 rounded-2xl p-6 text-white">
-          {/* Header */}
+        {/* This Week’s Focus */}
+        <div className="xl:col-span-4 xl:row-start-4 xl:row-span-3 bg-[#009CA9]/60 rounded-2xl p-6 text-white">
           <div className="flex items-start gap-4">
             <FaFireAlt className="text-white w-10 h-10 mt-1" />
             <div>
@@ -165,7 +168,7 @@ export default function Greeing() {
           </div>
 
           {/* Tags */}
-          <div className="flex gap-6 mt-4 text-sm">
+          <div className="flex gap-6 mt-4 text-sm flex-wrap">
             {modePercentages.slice(0, 3).map((item, i) => (
               <div key={i} className="flex items-center gap-2">
                 <span

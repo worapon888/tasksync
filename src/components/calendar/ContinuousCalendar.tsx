@@ -16,7 +16,6 @@ interface ContinuousCalendarProps {
 }
 
 export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
-  onClick,
   onAddTask,
 }) => {
   const today = new Date();
@@ -86,11 +85,6 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
     setYear(today.getFullYear());
     scrollToDay(today.getMonth(), today.getDate());
   };
-  const handleDayClick = (day: number, month: number) => {
-    if (!onClick) return;
-    if (month < 0) onClick(day, 11, year - 1);
-    else onClick(day, month, year);
-  };
 
   useEffect(() => {
     const container = document.querySelector(".calendar-container");
@@ -126,7 +120,7 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
     <div className="no-scrollbar calendar-container max-h-[70vh] sm:max-h-[80vh] overflow-y-scroll rounded-t-2xl border dark:border-white/10 border-slate-400 dark:bg-black/40 bg-white/10 pb-10 text-slate-800 ">
       <div className="sticky -top-px z-50 w-full rounded-t-2xl dark:bg-black/40 bg-black/40 backdrop-blur-[60px] px-5 pt-7 sm:px-8 sm:pt-8 shadow-[0_0_60px_-30px_rgba(0,200,255,0.3)]">
         <div className="mb-4 flex w-full flex-wrap items-center justify-between gap-6">
-          <div className="flex flex-wrap gap-2 sm:gap-3">
+          <div className="flex flex-wrap gap-2 sm:gap-3 ml-5 sm:ml-0">
             <Select
               name="month"
               value={`${selectedMonth}`}
@@ -141,7 +135,7 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
               Today
             </button>
           </div>
-          <div className="flex w-fit items-center justify-between">
+          <div className="flex w-fit items-center justify-between  ml-5 sm:ml-0">
             <button
               onClick={handlePrevYear}
               className="rounded-full border cursor-pointer dark:border-white/30 border-slate-500 p-1 transition-colors hover:bg-white dark:hover:bg-[#1a1d27] sm:p-2"
@@ -187,7 +181,14 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
           {daysOfWeek.map((day, i) => (
             <div
               key={i}
-              className="w-full border-b border-white/10 dark:text-cyan-400 text-cyan-500 py-2 text-center font-semibold"
+              className={clsx(
+                "w-full border-b border-white/10",
+                "py-1.5 sm:py-2 md:py-2.5", // ✅ ปรับ padding ตามขนาดจอ
+                "text-[10px] sm:text-xs md:text-sm lg:text-base", // ✅ ปรับขนาดฟอนต์อัตโนมัติ
+                "text-center font-semibold",
+                "text-cyan-500 dark:text-cyan-400", // ✅ รองรับ Dark Mode
+                "truncate" // ✅ ป้องกันข้อความล้นในจอแคบ
+              )}
             >
               {day}
             </div>
@@ -196,7 +197,7 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
       </div>
       <div className="w-full px-5 pt-4 sm:px-8 sm:pt-6">
         {calendarWeeks.map((week, weekIndex) => (
-          <div className="flex w-full" key={`week-${weekIndex}`}>
+          <div className="grid grid-cols-7 w-full" key={`week-${weekIndex}`}>
             {week.map(({ month, day }, dayIndex) => {
               const index = weekIndex * 7 + dayIndex;
               const matchEnergy = getMatchEnergy(day, month);
@@ -217,25 +218,21 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
               return (
                 <div
                   key={`${month}-${day}`}
-                  ref={(el) => void (dayRefs.current[index] = el)}
-                  data-month={month}
-                  data-day={day}
-                  onClick={() => handleDayClick(day, month)}
-                  className={clsx(
-                    "relative group cursor-pointer font-medium transition-all hover:z-20 hover:border-cyan-400",
-                    "aspect-square w-full grow",
-                    "m-[0.5px] sm:m-px",
-                    "rounded-xl sm:rounded-2xl lg:rounded-3xl",
-                    "border border-white/10 sm:border-2",
-                    "sm:size-20 md:size-24 lg:size-36 2xl:size-40"
-                  )}
+                  className="relative group cursor-pointer font-medium transition-all hover:z-20 hover:border-cyan-400
+    aspect-square overflow-hidden m-[0.5px] sm:m-px rounded-[15%] sm:rounded-2xl lg:rounded-3xl
+    border border-white/10 sm:border-2"
                 >
+                  {/* ✅ วันที่ — ชิดซ้ายบนทุกขนาด */}
                   <span
                     className={clsx(
-                      "absolute flex items-center justify-center rounded-full font-semibold",
-                      "text-[10px] sm:text-sm lg:text-base", // ปรับขนาด font
-                      "size-5 sm:size-6 lg:size-8", // ขนาดของวงกลม
-                      "left-1 top-1 sm:left-1 sm:top-1 lg:left-2 lg:top-2", // ตำแหน่ง
+                      "absolute z-10 flex items-center justify-center rounded-full font-semibold",
+                      // Position
+                      "top-1 left-1 sm:top-1.5 sm:left-1.5 md:top-2 md:left-[5px]",
+                      // Size (ใช้ size-* ถ้ากว้าง = สูง)
+                      "size-[16px] sm:size-[20px] sm:h-[18px] md:size-[18px] md:h-[20px] lg:size-[28px]",
+                      // Font size
+                      "text-[10px] sm:text-sm md:text-[10px] lg:text-lg xl:text-xl",
+                      // Color
                       isToday(day, month)
                         ? "bg-cyan-400 text-white"
                         : "bg-[#444444] text-white",
@@ -245,8 +242,9 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
                     {day}
                   </span>
 
-                  <div className="absolute top-2 left-1/2 -translate-x-1/2 flex flex-col items-center">
-                    <div className="w-10 h-1.5 sm:w-10 sm:h-2 rounded-full bg-gray-600 overflow-hidden mb-1">
+                  {/* ✅ Energy bar + label */}
+                  <div className="absolute top-2 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center w-full max-w-[80%]">
+                    <div className="w-[70%] md:w-[50%] h-1 sm:h-1.5 lg:h-2 rounded-full bg-gray-600 overflow-hidden mb-1">
                       <div
                         className={`h-full ${getBarColor(
                           matchEnergy?.energyLevel ?? ""
@@ -254,13 +252,14 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
                         style={{ width: `${matchEnergy?.value ?? 0}%` }}
                       />
                     </div>
-                    <p className="text-[10px] sm:text-[12px] text-black dark:text-gray-400">
+                    <p className="text-[10px] sm:text-[12px] lg:text-sm md:text-[8px] text-black dark:text-gray-400">
                       Energy
                     </p>
                   </div>
 
+                  {/* Task list */}
                   {tasksForDay.length > 0 && (
-                    <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-[96%] sm:w-[98%] max-h-[64px] sm:max-h-[70px] space-y-1 text-[10px] sm:text-[12px] text-white leading-tight text-left">
+                    <div className="hidden sm:block absolute bottom-1.5 left-1/2 -translate-x-1/2 w-[96%] sm:w-[98%] max-h-[60%] overflow-y-auto space-y-1 text-[10px] sm:text-[12px] text-white leading-tight text-left">
                       {tasksForDay.slice(0, 3).map((t) => {
                         const time = new Date(t.dueDate).toLocaleTimeString(
                           "th-TH",
@@ -269,14 +268,13 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
                             minute: "2-digit",
                           }
                         );
-
                         return (
                           <div
                             key={t.id}
                             className="w-full rounded-md px-2 py-[2px] bg-gradient-to-br from-white/10 to-white/0 backdrop-blur-md shadow-inner border border-white/5"
                           >
                             <div className="flex items-center justify-between gap-2 mb-[2px]">
-                              <span className="truncate w-[60%] font-semibold text-[9px] sm:text-[10px] text-white">
+                              <span className="block truncate w-full whitespace-nowrap overflow-hidden text-ellipsis">
                                 {t.title}
                               </span>
                               <span className="text-cyan-400 text-[9px] sm:text-[10px]">
@@ -307,10 +305,10 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
                     <span
                       className={clsx(
                         "absolute font-semibold truncate text-slate-300",
-                        "left-0 bottom-1 px-1.5 w-full text-sm",
-                        "sm:bottom-0 sm:text-lg",
-                        "lg:bottom-2.5 lg:left-3.5 lg:mb-[-4px] lg:w-fit lg:px-0 lg:text-xl",
-                        "2xl:text-2xl"
+                        "left-0 bottom-1 px-1.5 w-full",
+                        "text-[7px] sm:text-[12px] md:text-[12px] lg:text-lg 2xl:text-xl",
+                        "sm:bottom-0",
+                        "lg:bottom-2.5 lg:left-3.5 lg:mb-[-4px] lg:w-fit lg:px-0"
                       )}
                     >
                       {monthNames[month]}
@@ -324,10 +322,23 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
                         e.stopPropagation(); // ✅ ไม่ให้คลิกไปโดน handleDayClick
                         onAddTask(day, month, year); // ✅ ส่งวันที่ไปเปิด modal
                       }}
-                      className="absolute right-2 top-2 rounded-full opacity-0 transition-all focus:opacity-100 group-hover:opacity-100"
+                      className={clsx(
+                        "absolute z-20",
+                        // ตำแหน่งปุ่ม (ขวาบนบนจอใหญ่, ล่างขวาบนมือถือ)
+                        "right-1 top-1 sm:right-2 sm:top-2",
+                        // การแสดงผล
+                        "rounded-full opacity-0 transition-all",
+                        "group-hover:opacity-100 focus:opacity-100",
+                        // แสดงบนมือถือถ้าต้องการ
+                        "sm:block hidden" // ✅ ถ้าต้องการให้ *ไม่แสดงบน mobile* ลบทิ้งได้
+                      )}
                     >
                       <svg
-                        className="size-6 text-blue-500 transition-all hover:scale-110 group-focus:scale-100 cursor-pointer"
+                        className={clsx(
+                          "text-blue-500 transition-transform cursor-pointer",
+                          "size-5 sm:size-6 md:size-4", // ✅ เล็กลงนิดบนมือถือ
+                          "hover:scale-110 active:scale-95"
+                        )}
                         fill="currentColor"
                         viewBox="0 0 24 24"
                       >

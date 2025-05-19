@@ -53,7 +53,7 @@ export default function DemoWrapper() {
 
   return (
     <div className="relative w-full px-4 pt-6 pb-10 flex flex-col items-center ">
-      <div className="w-full max-w-[1300px]">
+      <div className="w-full min-w-[320px] max-w-none sm:max-w-[1300px]">
         <ContinuousCalendar
           onClick={onClickHandler}
           onAddTask={handleAddTask}

@@ -1,6 +1,7 @@
 "use client";
 import { features } from "../../data";
 import { useTaskMode } from "@/context/TaskModeContext";
+import { TaskMode } from "@/generated/prisma";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -13,7 +14,7 @@ export default function Home() {
   return (
     <>
       {/* Content */}
-      <div className="relative z-10 ml-0 md:ml-24 mt-16 md:mt-20 flex flex-col items-center min-h-screen overflow-y-auto ">
+      <div className="relative z-10 ml-0  mt-16 md:mt-20 flex flex-col items-center min-h-screen overflow-y-auto ">
         <h2 className="text-xl md:text-2xl mb-2 dark:text-white  text-blue-400">
           Hello, Sir!
         </h2>
@@ -43,7 +44,7 @@ export default function Home() {
               <div
                 key={i}
                 onClick={() => {
-                  const modeEnum = normalizeTitleToEnum(item.title);
+                  const modeEnum = normalizeTitleToEnum(item.title) as TaskMode;
                   setMode(modeEnum); // ✅ ส่งค่าแบบ enum จริง
                   router.push("/dashboard/board");
                 }}

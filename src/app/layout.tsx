@@ -37,9 +37,9 @@ export default function RootLayout({
 
               <ParticlesBackground />
               <Topbar />
-              <main className="relative z-10 flex">
+              <main className="relative z-10 flex w-full overflow-x-hidden max-w-full">
                 <Sidebar />
-                <div className="flex-1">{children}</div>
+                <div className="flex-1 min-w-0">{children}</div>
               </main>
             </div>
           </div>

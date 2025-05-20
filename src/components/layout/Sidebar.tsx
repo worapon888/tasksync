@@ -101,7 +101,7 @@ export default function Sidebar() {
       <aside
         ref={sidebarRef}
         className={clsx(
-          "sticky top-[80px] left-[5px] sm:left-[20px] lg:left-[60px] z-40 ",
+          "sticky top-[80px] left-[5px] sm:left-[10px] lg:left-[15px] z-40 ",
           isExpanded
             ? "h-fit min-h-[80vh] max-h-[90vh] w-16 bg-white/80 dark:bg-[#242739]/60 rounded-full py-6 drop-shadow-2xl flex flex-col justify-start items-center overflow-hidden"
             : "h-16 w-16 bg-white/80 dark:bg-[#242739]/60 rounded-full p-2 flex justify-center items-center"

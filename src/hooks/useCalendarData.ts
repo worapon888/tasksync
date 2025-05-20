@@ -60,9 +60,11 @@ export function useCalendarData(year: number, energyData: EnergyData[]) {
         today.getMonth() === month &&
         today.getFullYear() === year,
       getMatchEnergy: (day: number, month: number, yr: number = year) =>
-        energyData.find(
-          (e) => e.day === day && e.month === month && e.year === yr
-        ),
+        Array.isArray(energyData)
+          ? energyData.find(
+              (e) => e.day === day && e.month === month && e.year === yr
+            ) ?? null
+          : null,
     };
   }, [year, energyData]);
 }

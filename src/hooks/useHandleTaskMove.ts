@@ -1,6 +1,7 @@
 import { DragEndEvent } from "@dnd-kit/core";
 import { Task } from "@/types/task";
 import { TaskStatus } from "@/generated/prisma";
+import { gsap } from "gsap";
 
 export function createHandleTaskMove({
   tasks,
@@ -42,6 +43,20 @@ export function createHandleTaskMove({
         body: JSON.stringify({ status }),
       });
       fetchTasks();
+
+      setTimeout(() => {
+        gsap.fromTo(
+          ".task-card",
+          { x: -30, opacity: 0 },
+          {
+            x: 0,
+            opacity: 1,
+            duration: 0.4,
+            ease: "power2.out",
+            stagger: 0.05,
+          }
+        );
+      }, 50);
     } catch (err) {
       console.error("❌ Move failed", err);
     }

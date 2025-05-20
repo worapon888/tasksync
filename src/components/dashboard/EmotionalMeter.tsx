@@ -1,18 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
 import { FaRegSmileBeam } from "react-icons/fa";
 import { ChevronDown } from "lucide-react";
 import MeterArcUI from "./MeterArcUI";
-
-// import { useTaskMode } from "@/context/TaskModeContext";
 import useBoardTasks from "@/hooks/useBoardTasks";
 import { getEnergyValue } from "@/utils/energyUtils";
+import { gsap } from "gsap";
 
 export default function EmotionalMeter() {
   const [range, setRange] = useState<"daily" | "weekly" | "monthly">("weekly");
 
-  // const { mode } = useTaskMode(); // ยังใช้ได้ปกติ
   const { tasks } = useBoardTasks(range);
   const flatTasks = Object.values(tasks)
     .flat()
@@ -25,9 +23,8 @@ export default function EmotionalMeter() {
       updatedAt: new Date(task.updatedAt),
     }));
 
-  const energyValue = getEnergyValue(flatTasks); // ✅ ส่งเข้า utils ได้
+  const energyValue = getEnergyValue(flatTasks);
 
-  // แปลงค่าเป็นข้อความ
   const getEnergyLabel = (value: number) => {
     if (value > 80) return "High Energy";
     if (value > 60) return "Moderate Energy";
@@ -35,18 +32,55 @@ export default function EmotionalMeter() {
     if (value > 20) return "Burnout";
     return "Stagnant";
   };
+
   const getEnergyColor = (value: number): string => {
-    if (value > 80) return "#22C55E"; // High Energy
-    if (value > 60) return "#34D399"; // Moderate Energy
-    if (value > 40) return "#FACC15"; // Low Energy
-    if (value > 20) return "#DC2626"; // Burnout
-    return "#92400E"; // Stagnant
+    if (value > 80) return "#22C55E";
+    if (value > 60) return "#34D399";
+    if (value > 40) return "#FACC15";
+    if (value > 20) return "#DC2626";
+    return "#92400E";
   };
 
+  // 💡 GSAP animation
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(".meter-header", {
+        opacity: 0,
+        y: -20,
+        duration: 0.8,
+        ease: "power2.out",
+      });
+
+      gsap.from(".meter-arc", {
+        scale: 0.8,
+        opacity: 0,
+        duration: 0.8,
+        ease: "back.out(1.7)",
+        delay: 0.3,
+      });
+
+      gsap.from([".meter-label", ".meter-button"], {
+        opacity: 0,
+        y: 10,
+        duration: 0.6,
+        stagger: 0.2,
+        delay: 0.5,
+        ease: "power2.out",
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, [energyValue]);
+
   return (
-    <div className="dark:bg-black/60 bg-white/80 rounded-xl p-8 w-full min-h-[620px] flex flex-col justify-between ">
+    <div
+      ref={containerRef}
+      className="dark:bg-black/60 bg-white/80 rounded-xl p-8 w-full min-h-[620px] flex flex-col justify-between"
+    >
       {/* Header */}
-      <div className="flex justify-between items-start gap-4">
+      <div className="flex justify-between items-start gap-4 meter-header">
         <div>
           <h3 className="text-slate-500 text-xl font-semibold">
             Emotional Meter
@@ -72,12 +106,12 @@ export default function EmotionalMeter() {
       </div>
 
       {/* Meter */}
-      <div className="flex flex-col items-center mt-6">
+      <div className="flex flex-col items-center mt-6 meter-arc">
         <MeterArcUI value={energyValue} />
       </div>
 
       {/* Energy State */}
-      <div className="text-center mt-4">
+      <div className="text-center mt-4 meter-label">
         <p className="text-sm text-slate-400">Emotional</p>
         <h4
           className="text-lg font-bold text-green-400"
@@ -88,7 +122,7 @@ export default function EmotionalMeter() {
       </div>
 
       {/* Action Button */}
-      <div className="mt-6 flex justify-center">
+      <div className="mt-6 flex justify-center meter-button">
         <button className="bg-white/10 hover:bg-white/20 text-slate-500 text-sm px-6 py-2 rounded-lg flex items-center gap-2">
           Ready to take a break?
           <div className="bg-cyan-400 text-black p-1 rounded-md">

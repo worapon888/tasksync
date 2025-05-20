@@ -5,6 +5,7 @@ import { Providers } from "./providers"; // ✅ เรียกใช้ compone
 import ParticlesBackground from "@/components/tsparticles";
 import Topbar from "@/components/layout/Topbar";
 import Sidebar from "@/components/layout/Sidebar";
+import ClientLayoutWrapper from "@/components/layout/ClientLayoutWrapper";
 
 const interSans = Inter({
   variable: "--font-inter-sans",
@@ -39,7 +40,7 @@ export default function RootLayout({
               <Topbar />
               <main className="relative z-10 flex w-full overflow-x-hidden max-w-full">
                 <Sidebar />
-                <div className="flex-1 min-w-0">{children}</div>
+                <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
               </main>
             </div>
           </div>

@@ -5,9 +5,43 @@ import { BiSolidMessageRoundedDots } from "react-icons/bi";
 import { useDashboardData } from "@/context/DashboardContext";
 import type { DashboardData } from "@/types/task";
 import { TaskStatus, TaskMode } from "@/generated/prisma";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
 
 export default function Greeing() {
   const context = useDashboardData();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      gsap.fromTo(
+        containerRef.current.children,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power2.out",
+          stagger: 0.15,
+        }
+      );
+    }
+
+    if (gridRef.current) {
+      gsap.fromTo(
+        gridRef.current.children,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          ease: "power2.out",
+          stagger: 0.1,
+        }
+      );
+    }
+  }, []);
 
   if (!context?.dashboardData) {
     return (
@@ -76,9 +110,15 @@ export default function Greeing() {
   };
 
   return (
-    <div className="text-white  max-w-screen-xl mx-auto px-4 flex flex-col justify-start space-y-4 sm:space-y-6 md:space-y-8">
+    <div
+      ref={containerRef}
+      className="text-white  max-w-screen-xl mx-auto px-4 flex flex-col justify-start space-y-4 sm:space-y-6 md:space-y-8"
+    >
       {/* Performance Chart */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-x-3 gap-y-5">
+      <div
+        ref={gridRef}
+        className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-x-3 gap-y-5"
+      >
         {/* Performance Chart */}
         <div className="xl:col-span-3 xl:row-span-3 dark:bg-black/60 bg-white/80 rounded-xl p-4  flex flex-col justify-between">
           <div>

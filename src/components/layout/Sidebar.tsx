@@ -17,7 +17,8 @@ import clsx from "clsx";
 import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
 import { useProfile } from "@/context/ProfileContext";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useLayoutEffect } from "react";
+import { gsap } from "gsap";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -27,6 +28,53 @@ export default function Sidebar() {
 
   const [isMobile, setIsMobile] = useState(false);
   const [isExpanded, setIsExpanded] = useState(true);
+
+  const contentRef = useRef<HTMLDivElement>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    if (!sidebarRef.current) return;
+
+    gsap.to(sidebarRef.current, {
+      width: isExpanded ? 64 : 56,
+      height: isExpanded ? 500 : 56,
+      padding: isExpanded ? "1.5rem" : "0.5rem",
+      duration: 0.5,
+      ease: "power4.out",
+    });
+  }, [isExpanded]);
+
+  useEffect(() => {
+    if (isExpanded && contentRef.current) {
+      const ctx = gsap.context(() => {
+        gsap.fromTo(
+          ".sidebar-icon",
+          { y: 10, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.4,
+            ease: "power2.out",
+            stagger: 0.05,
+          }
+        );
+
+        gsap.fromTo(
+          ".sidebar-user",
+          { y: 10, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.4,
+            ease: "power2.out",
+            delay: 0.2,
+          }
+        );
+      }, contentRef);
+
+      return () => ctx.revert(); // cleanup
+    }
+  }, [isExpanded]);
 
   // Detect screen width
   // ปรับ breakpoint เป็น iPad (lg = 1024px)
@@ -51,18 +99,19 @@ export default function Sidebar() {
         />
       )}
       <aside
+        ref={sidebarRef}
         className={clsx(
-          "sticky top-[80px] left-[5px] sm:left-[20px] lg:left-[60px] z-40 transition-all duration-300 ease-in-out",
+          "sticky top-[80px] left-[5px] sm:left-[20px] lg:left-[60px] z-40 ",
           isExpanded
-            ? "h-fit min-h-[60vh] max-h-[90vh] w-20 bg-white/80 dark:bg-[#242739]/60 rounded-full py-6 drop-shadow-2xl flex flex-col justify-start items-center overflow-hidden"
-            : "h-14 w-14 bg-white/80 dark:bg-[#242739]/60 rounded-full p-2 flex justify-center items-center"
+            ? "h-fit min-h-[80vh] max-h-[90vh] w-16 bg-white/80 dark:bg-[#242739]/60 rounded-full py-6 drop-shadow-2xl flex flex-col justify-start items-center overflow-hidden"
+            : "h-16 w-16 bg-white/80 dark:bg-[#242739]/60 rounded-full p-2 flex justify-center items-center"
         )}
       >
         {/* Toggle (เฉพาะ mobile) */}
         {isMobile && (
           <button onClick={() => setIsExpanded((prev) => !prev)}>
             {isExpanded ? (
-              <X className="w-5 h-5 text-gray-500 dark:text-gray-200 cursor-pointer" />
+              <X className="w-6 h-6 text-gray-500 dark:text-gray-200 cursor-pointer" />
             ) : (
               <Menu className="w-6 h-6 text-cyan-500 cursor-pointer" />
             )}
@@ -70,10 +119,14 @@ export default function Sidebar() {
         )}
 
         {/* Sidebar Content */}
-        <div className="flex flex-col  justify-between h-screen ">
+        <div
+          className="flex flex-col justify-between h-screen "
+          ref={contentRef}
+        >
           {isExpanded && (
             <>
-              <div className="flex flex-col  mt-10 space-y-10 ">
+              {/* ICONS */}
+              <div className="flex flex-col mt-10 space-y-10">
                 <SidebarIcon href="/" icon={Home} pathname={pathname} />
                 <SidebarIcon
                   href="/dashboard/board"
@@ -98,7 +151,7 @@ export default function Sidebar() {
               </div>
 
               {user ? (
-                <div className="flex flex-col items-center mt-10 space-y-10 mb-2">
+                <div className="sidebar-user flex flex-col items-center mt-10 space-y-10 mb-2">
                   {profile.image ? (
                     <Image
                       src={profile.image || "/default-avatar.png"}
@@ -142,7 +195,7 @@ function SidebarIcon({
     <Link href={href}>
       <Icon
         className={clsx(
-          "w-7 h-7 cursor-pointer transition",
+          "sidebar-icon w-7 h-7 cursor-pointer transition",
           pathname === href
             ? "text-cyan-400"
             : "text-slate-500 hover:text-cyan-400"

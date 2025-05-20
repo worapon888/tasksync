@@ -8,11 +8,49 @@ import {
   FaTools,
   FaQuoteRight,
 } from "react-icons/fa";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
 
 export default function AboutPage() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const quoteRef = useRef<HTMLQuoteElement>(null);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      gsap.fromTo(
+        containerRef.current.querySelectorAll(".about-section"),
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "power3.out",
+          stagger: 0.3,
+        }
+      );
+    }
+
+    if (quoteRef.current) {
+      gsap.fromTo(
+        quoteRef.current,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          delay: 1.2,
+        }
+      );
+    }
+  }, []);
+
   return (
     <div className="relative z-10 px-4 sm:px-6 md:px-10 py-10 min-h-screen ml-0 md:ml-24 overflow-auto">
-      <div className="max-w-screen-md mx-auto flex flex-col items-center gap-6 sm:gap-8">
+      <div
+        ref={containerRef}
+        className="max-w-screen-md mx-auto flex flex-col items-center gap-6 sm:gap-8"
+      >
         <h1 className="text-2xl sm:text-4xl font-bold text-cyan-400 text-center mb-6">
           About Us – TaskSync
         </h1>
@@ -23,7 +61,7 @@ export default function AboutPage() {
         </p>
 
         {/* Why We Built This */}
-        <section className="mt-10 flex flex-col items-center text-center px-2">
+        <section className="about-section mt-10 flex flex-col items-center text-center px-2">
           <h2 className="text-xl sm:text-2xl font-semibold text-white mb-3 flex items-center gap-2">
             <FaBolt className="text-cyan-400" /> Why We Built This
           </h2>
@@ -53,7 +91,7 @@ export default function AboutPage() {
         </section>
 
         {/* Built for Solo Creators */}
-        <section className="mt-10 flex flex-col items-center text-center px-2">
+        <section className="about-section mt-10 flex flex-col items-center text-center px-2">
           <h2 className="text-xl sm:text-2xl font-semibold text-white mb-3 flex items-center gap-2">
             <FaUser className="text-cyan-400" /> Built for Solo Creators
           </h2>
@@ -70,7 +108,7 @@ export default function AboutPage() {
         </section>
 
         {/* From Developer to Developer */}
-        <section className="mt-10 flex flex-col items-center text-center px-2">
+        <section className="about-section mt-10 flex flex-col items-center text-center px-2">
           <h2 className="text-xl sm:text-2xl font-semibold text-white mb-3 flex items-center gap-2">
             <FaTools className="text-cyan-400" /> From Developer to Developer
           </h2>
@@ -82,7 +120,10 @@ export default function AboutPage() {
         </section>
 
         {/* Quote */}
-        <blockquote className="border-l-4 border-cyan-500 pl-4 italic text-center text-lg sm:text-2xl dark:text-slate-400 text-slate-200 mt-10 flex items-start gap-2">
+        <blockquote
+          ref={quoteRef}
+          className="border-l-4 border-cyan-500 pl-4 italic text-center text-lg sm:text-2xl dark:text-slate-400 text-slate-200 mt-10 flex items-start gap-2"
+        >
           <FaQuoteRight className="mt-1 text-cyan-300" />
           <span>
             &quot;You don’t need more productivity. You need more peace with

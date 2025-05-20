@@ -7,8 +7,43 @@ import {
   FaUserCheck,
 } from "react-icons/fa";
 import { BsFillPlayCircleFill } from "react-icons/bs";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
 
 export default function HowItWorksPage() {
+  const stepsRef = useRef<HTMLDivElement>(null);
+  const quoteRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (stepsRef.current) {
+      gsap.fromTo(
+        stepsRef.current.querySelectorAll(".how-step"),
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power3.out",
+          stagger: 0.2,
+        }
+      );
+    }
+
+    if (quoteRef.current) {
+      gsap.fromTo(
+        quoteRef.current,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          delay: 1.2,
+        }
+      );
+    }
+  }, []);
+
   return (
     <div className="relative z-10 ml-0 md:ml-24 min-h-screen overflow-visible px-4 sm:px-6 md:px-10 py-10">
       <div className="max-w-4xl mx-auto py-10 text-white">
@@ -16,9 +51,9 @@ export default function HowItWorksPage() {
           How It Works — TaskSync
         </h1>
 
-        <div className="space-y-12 px-2 sm:px-4">
+        <div ref={stepsRef} className="space-y-12 px-2 sm:px-4">
           {/* Step 1 */}
-          <div className="flex flex-col items-center text-center gap-2">
+          <div className="how-step flex flex-col items-center text-center gap-2">
             <FaRegCalendarCheck
               className="text-cyan-300 mt-1.5 transition-transform hover:scale-105 duration-300"
               size={28}
@@ -34,7 +69,7 @@ export default function HowItWorksPage() {
           </div>
 
           {/* Step 2 */}
-          <div className="flex flex-col items-center text-center gap-2">
+          <div className="how-step flex flex-col items-center text-center gap-2">
             <FaRegSmile
               className="text-pink-400 mt-1.5 transition-transform hover:scale-105 duration-300"
               size={28}
@@ -49,7 +84,7 @@ export default function HowItWorksPage() {
           </div>
 
           {/* Step 3 */}
-          <div className="flex flex-col items-center text-center gap-2">
+          <div className="how-step flex flex-col items-center text-center gap-2">
             <FaAlignLeft
               className="text-yellow-400 mt-1.5 transition-transform hover:scale-105 duration-300"
               size={28}
@@ -64,7 +99,7 @@ export default function HowItWorksPage() {
           </div>
 
           {/* Step 4 */}
-          <div className="flex flex-col items-center text-center gap-2">
+          <div className="how-step flex flex-col items-center text-center gap-2">
             <FaUserCheck
               className="text-green-400 mt-1.5 transition-transform hover:scale-105 duration-300"
               size={28}
@@ -80,7 +115,7 @@ export default function HowItWorksPage() {
         </div>
 
         {/* Quote */}
-        <div className="mt-20 text-center px-2">
+        <div ref={quoteRef} className="mt-20 text-center px-2">
           <BsFillPlayCircleFill
             className="text-cyan-400 mx-auto mb-4 transition-transform hover:scale-105 duration-300"
             size={42}

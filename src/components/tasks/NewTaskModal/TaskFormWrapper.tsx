@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import TitleInput from "./TitleInput";
 import DescriptionInput from "./DescriptionInput";
 import DueDateInput from "./DueDateInput";
@@ -10,6 +9,9 @@ import ActionButtons from "./ActionButtons";
 
 import type { IncomingTask } from "@/types/task";
 import { TaskPriority, TaskMode } from "@/generated/prisma";
+
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
 
 interface TaskFormWrapperProps {
   mode: TaskMode;
@@ -76,8 +78,28 @@ export default function TaskFormWrapper({
     onClose();
   };
 
+  const formRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (formRef.current) {
+      gsap.set(formRef.current, {
+        opacity: 0,
+        scale: 0.9,
+        y: 20,
+      });
+
+      gsap.to(formRef.current, {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        duration: 0.6,
+        ease: "power3.out",
+      });
+    }
+  }, []);
+
   return (
-    <div className="space-y-4">
+    <div ref={formRef} className="space-y-4">
       <TitleInput value={title} onChange={setTitle} />
       <DescriptionInput value={description} onChange={setDescription} />
       <DueDateInput value={date} onChange={setDate} />

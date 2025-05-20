@@ -1,6 +1,7 @@
 // components/tasks/TaskCardDropdown.tsx
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
 export default function TaskCardDropdown({
@@ -12,6 +13,24 @@ export default function TaskCardDropdown({
 }) {
   const [open, setOpen] = useState(false);
 
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (open && menuRef.current) {
+      gsap.fromTo(
+        menuRef.current,
+        { opacity: 0, y: -10, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.3,
+          ease: "power2.out",
+        }
+      );
+    }
+  }, [open]);
+
   return (
     <div className="relative">
       <BsThreeDotsVertical
@@ -19,7 +38,10 @@ export default function TaskCardDropdown({
         className="dark:text-white/80 text-slate-500 text-lg cursor-pointer"
       />
       {open && (
-        <div className="absolute right-0 mt-2 w-28 bg-white dark:bg-zinc-800 shadow-lg rounded-md text-sm z-50 overflow-hidden">
+        <div
+          ref={menuRef}
+          className="absolute right-0 mt-2 w-28 bg-white dark:bg-zinc-800 shadow-lg rounded-md text-sm z-50 overflow-hidden"
+        >
           <button
             onClick={() => {
               setOpen(false);

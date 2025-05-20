@@ -14,7 +14,7 @@ export const features = [
   {
     title: "Personal Assistant",
     subtitle: "Get things done, beautifully.",
-    icon: <Briefcase />,
+    icon: Briefcase, // ✅ เปลี่ยนจาก <Briefcase /> เป็น Briefcase
     color: "from-red-500/20 to-red-900/20",
     border: "border-red-500/40",
     glow: "shadow-[0_0_40px_rgba(255,50,50,0.3)]",
@@ -22,27 +22,27 @@ export const features = [
   {
     title: "Career Transition",
     subtitle: "Redefine your future.",
-    icon: <ArrowRightLeft />,
+    icon: ArrowRightLeft,
   },
   {
     title: "Financial Planner",
     subtitle: "Build wealth, step by step.",
-    icon: <WalletMinimal />,
+    icon: WalletMinimal,
   },
   {
     title: "Business Launchpad",
     subtitle: "From idea to reality",
-    icon: <Rocket />,
+    icon: Rocket,
   },
   {
     title: "Social Growth",
     subtitle: "Connect deeper, live better.",
-    icon: <Handshake />,
+    icon: Handshake,
   },
   {
     title: "PersonalDevelopment",
     subtitle: "Evolve beyond limits.",
-    icon: <Brain />,
+    icon: Brain,
     color: "from-blue-500/20 to-blue-900/20",
     border: "border-blue-500/40",
     glow: "shadow-[0_0_40px_rgba(100,100,255,0.3)]",
@@ -50,12 +50,12 @@ export const features = [
   {
     title: "Health Journey",
     subtitle: "Strong body, clear mind.",
-    icon: <BicepsFlexed />,
+    icon: BicepsFlexed,
   },
   {
     title: "Leisure & Balance",
     subtitle: "Recharge and bloom.",
-    icon: <Leaf />,
+    icon: Leaf,
     color: "from-green-500/20 to-green-900/20",
     border: "border-green-500/40",
     glow: "shadow-[0_0_40px_rgba(0,200,100,0.3)]",
@@ -63,7 +63,7 @@ export const features = [
   {
     title: "Mindful Living",
     subtitle: "Peace within, strength without.",
-    icon: <HeartPlus />,
+    icon: HeartPlus,
   },
 ];
 

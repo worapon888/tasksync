@@ -7,6 +7,8 @@ import { useState } from "react";
 import { Task } from "@/types/task";
 import TaskCardDropdown from "./TaskCardDropdown";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import { gsap } from "gsap";
+import { useEffect, useRef } from "react";
 
 export default function TaskCard({
   task,
@@ -35,6 +37,24 @@ export default function TaskCard({
     zIndex: 10,
   };
 
+  const cardRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (cardRef.current) {
+      gsap.fromTo(
+        cardRef.current,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.4,
+          ease: "power2.out",
+          delay: 0.1,
+        }
+      );
+    }
+  }, []);
+
   return (
     <div className="relative w-full max-w-sm overflow-visible">
       {/* ✅ Dropdown อยู่มุมล่างขวา */}
@@ -47,11 +67,14 @@ export default function TaskCard({
 
       {/* ✅ กล่อง draggable จริง */}
       <div
-        ref={setNodeRef}
+        ref={(node) => {
+          setNodeRef(node);
+          cardRef.current = node;
+        }}
         style={style}
         {...listeners}
         {...attributes}
-        className="group rounded-xl dark:bg-black/60 bg-white/80 dark:text-white text-gray-500 border border-white/10 backdrop-blur-sm p-4 cursor-grab active:cursor-grabbing transition-shadow hover:shadow-lg"
+        className="group rounded-xl dark:bg-black/60 bg-white/80 dark:text-white text-gray-500 border border-white/10 backdrop-blur-sm p-4 cursor-grab active:cursor-grabbing transition-shadow duration-300 hover:shadow-[0_0_12px_rgba(34,211,238,0.3)]"
       >
         {/* Hover Hint */}
         <span className="absolute -top-5 -right-1 px-3 py-1 shadow-md text-[10px] rounded-xl italic bg-cyan-400/80 text-black opacity-0 group-hover:opacity-80 transition-all text-center z-10">
@@ -67,7 +90,7 @@ export default function TaskCard({
               alt={task.title || "Task image"}
               fill
               sizes="100vw"
-              className="object-cover"
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
             />
           </div>
         )}

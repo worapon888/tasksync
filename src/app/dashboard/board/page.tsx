@@ -16,6 +16,8 @@ import FloatingZones from "@/components/drag/FloatingZones";
 import useDragTaskConfirmDelete from "@/hooks/useDragTaskConfirmDelete";
 import useHandleAddTask from "@/hooks/useHandleAddTask";
 import { createHandleTaskMove } from "@/hooks/useHandleTaskMove";
+import { useLayoutEffect } from "react";
+import { gsap } from "gsap";
 
 export default function BoardPage() {
   const { data: session } = useSession();
@@ -36,6 +38,21 @@ export default function BoardPage() {
     openForEdit,
     setTaskToDeleteId,
   });
+  useLayoutEffect(() => {
+    gsap.from(".task-card", {
+      y: 20,
+      opacity: 0,
+      duration: 0.5,
+      stagger: 0.1,
+      ease: "power2.out",
+    });
+
+    gsap.fromTo(
+      ".floating-zone",
+      { scale: 0.8, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.3, ease: "power2.out" }
+    );
+  }, [tasks]);
 
   const renderColumns = useMemo(
     () =>
@@ -63,9 +80,8 @@ export default function BoardPage() {
 
   return (
     <DragDropProvider onDragEnd={handleTaskMove}>
-      <FloatingZones />
-
       <div className="relative z-10 ml-0 md:ml-24 px-4 py-10 md:px-10 mt-10 h-screen overflow-auto">
+        <FloatingZones />
         <ModeSelector />
         <div className="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
           {renderColumns}

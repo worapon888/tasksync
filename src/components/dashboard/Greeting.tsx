@@ -3,7 +3,6 @@
 import { FaFireAlt } from "react-icons/fa";
 import { BiSolidMessageRoundedDots } from "react-icons/bi";
 import { useDashboardData } from "@/context/DashboardContext";
-import type { DashboardData } from "@/types/task";
 import { TaskStatus, TaskMode } from "@/generated/prisma";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";

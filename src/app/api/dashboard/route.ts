@@ -2,19 +2,27 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { TaskStatus } from "@/generated/prisma"; // ✅ ปรับ path ถ้าใช้จาก Prisma model จริง
+import { TaskStatus } from "@/generated/prisma";
 
 export async function GET() {
   const session = await getServerSession(authOptions);
-  if (!session?.user?.id) {
+
+  if (!session?.user?.email) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const tasks = await prisma.task.findMany({
-    where: { userId: session.user.id },
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
   });
 
-  // 🟢 กลุ่ม task ตามสถานะ
+  if (!user) {
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
+  }
+
+  const tasks = await prisma.task.findMany({
+    where: { userId: user.id },
+  });
+
   const grouped = {
     total: tasks.length,
     toDo: tasks.filter((t) => t.status === TaskStatus.TODO).length,
@@ -23,7 +31,6 @@ export async function GET() {
     done: tasks.filter((t) => t.status === TaskStatus.DONE).length,
   };
 
-  // 🟢 จัดกลุ่มตามวันในสัปดาห์
   const byDay = [0, 1, 2, 3, 4, 5, 6].map((d) => {
     const count = tasks.filter((t) => {
       const date = new Date(t.createdAt);
@@ -32,19 +39,16 @@ export async function GET() {
     return count;
   });
 
-  // 🟢 เลือก Focus Tasks จาก status === DOING
   const focusTasks = tasks
     .filter((t) => t.status === TaskStatus.DOING)
-    .slice(0, 2); // เอาแค่ 2 อันแรก
+    .slice(0, 2);
 
-  // 🟢 คำนวณ progress ราย mode
   const modeProgress: Record<string, number> = {};
   const totalPerMode: Record<string, number> = {};
 
   for (const task of tasks) {
     const mode = task.mode || "Uncategorized";
     totalPerMode[mode] = (totalPerMode[mode] || 0) + 1;
-
     if (task.status === TaskStatus.DONE) {
       modeProgress[mode] = (modeProgress[mode] || 0) + 1;
     }
@@ -57,7 +61,6 @@ export async function GET() {
     ),
   }));
 
-  // ✅ ส่งทั้งหมดกลับ
   return NextResponse.json({
     grouped,
     byDay,

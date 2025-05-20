@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FiLock, FiMail, FiUser } from "react-icons/fi";
 import { signIn } from "next-auth/react";
+import { gsap } from "gsap";
 
 export default function RegisterPage() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -42,6 +43,52 @@ export default function RegisterPage() {
     });
   };
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline();
+
+      gsap.set(".register-heading", { opacity: 0, y: -20 });
+      gsap.set(".register-field", { opacity: 0, y: 20 });
+      gsap.set([".register-divider", ".register-google", ".register-footer"], {
+        opacity: 0,
+        y: 10,
+      });
+
+      tl.to(".register-heading", {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: "power2.out",
+      })
+        .to(
+          ".register-field",
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: "power2.out",
+            stagger: 0.15,
+          },
+          "<+0.1"
+        )
+        .to(
+          [".register-divider", ".register-google", ".register-footer"],
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            ease: "power2.out",
+            stagger: 0.1,
+          },
+          "<+0.2"
+        );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <div className="relative z-10 ml-0 md:ml-24 px-4 py-10 md:px-10 mt-10 h-screen overflow-auto">
       <main className="flex-grow flex items-center justify-center px-4 sm:px-6">
@@ -49,7 +96,7 @@ export default function RegisterPage() {
           onSubmit={handleRegister}
           className="bg-white dark:bg-black/40 w-full max-w-md sm:rounded-2xl sm:shadow-md px-6 py-12 sm:p-16 space-y-8"
         >
-          <div className="space-y-1">
+          <div className="space-y-1 register-heading">
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
               Create your account
             </h1>
@@ -59,7 +106,7 @@ export default function RegisterPage() {
           </div>
 
           <div className="space-y-4">
-            <div className="relative">
+            <div className="relative register-field">
               <label className="absolute -top-2 left-3 text-xs px-1 bg-white dark:bg-black text-gray-500">
                 Name
               </label>
@@ -75,7 +122,7 @@ export default function RegisterPage() {
               <FiUser className="absolute top-3.5 left-3 text-gray-400" />
             </div>
 
-            <div className="relative">
+            <div className="relative register-field">
               <label className="absolute -top-2 left-3 text-xs px-1 bg-white dark:bg-black text-gray-500">
                 Email
               </label>
@@ -91,7 +138,7 @@ export default function RegisterPage() {
               <FiMail className="absolute top-3.5 left-3 text-gray-400" />
             </div>
 
-            <div className="relative">
+            <div className="relative register-field">
               <label className="absolute -top-2 left-3 text-xs px-1 bg-white dark:bg-black text-gray-500">
                 Password
               </label>
@@ -117,7 +164,7 @@ export default function RegisterPage() {
             Create Account
           </button>
 
-          <div className="flex items-center gap-4 text-sm text-gray-400">
+          <div className="register-divider flex items-center gap-4 text-sm text-gray-400">
             <div className="flex-1 h-px bg-gray-300 dark:bg-slate-600" />
             or
             <div className="flex-1 h-px bg-gray-300 dark:bg-slate-600" />
@@ -126,7 +173,7 @@ export default function RegisterPage() {
           <button
             type="button"
             onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-            className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 text-gray-800 py-2 rounded-lg hover:shadow-md"
+            className="register-google w-full flex items-center justify-center gap-3 bg-white border border-gray-300 text-gray-800 py-2 rounded-lg hover:shadow-md"
           >
             <Image
               src="https://img.icons8.com/color/48/000000/google-logo.png"
@@ -137,7 +184,7 @@ export default function RegisterPage() {
             <span className="text-sm font-semibold">Continue with Google</span>
           </button>
 
-          <p className="text-center text-sm text-gray-500">
+          <p className="register-footer text-center text-sm text-gray-500">
             Already have an account?{" "}
             <Link href="/login" className="text-blue-600 hover:underline">
               Sign in

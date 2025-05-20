@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Topbar() {
   return (
-    <nav className="relative z-50 w-full px-4 sm:px-6 py-4 flex items-center justify-between z-10">
+    <nav className="relative z-50 w-full px-4 sm:px-6 py-4 flex items-center justify-between ">
       {/* Logo */}
       <Link href="/">
         <Image
@@ -12,7 +12,6 @@ export default function Topbar() {
           alt="TaskSync Logo"
           width={120}
           height={40}
-          style={{ height: "auto" }}
           priority
         />
       </Link>

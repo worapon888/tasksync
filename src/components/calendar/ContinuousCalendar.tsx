@@ -1,7 +1,7 @@
 // components/calendar/ContinuousCalendar.tsx
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useEnergy } from "@/context/EnergyContext";
 import { useCalendarData } from "@/hooks/useCalendarData";
 import { getBarColor } from "@/utils/energyUtils";
@@ -9,6 +9,7 @@ import { daysOfWeek, monthNames } from "@/utils/constants";
 import { Select } from "@/components/ui/Select";
 import { useTaskContext } from "@/context/TaskContext";
 import clsx from "clsx";
+import { gsap } from "gsap";
 
 interface ContinuousCalendarProps {
   onClick?: (_day: number, _month: number, _year: number) => void;
@@ -116,9 +117,63 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
     scrollToDay(today.getMonth(), today.getDate());
   }, []);
 
+  const calendarRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      // Header animation
+      gsap.from(".calendar-header", {
+        y: -20,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power2.out",
+      });
+
+      // Energy bars animation (appear)
+      gsap.from(".energy-bar", {
+        scaleX: 0,
+        transformOrigin: "left center",
+        duration: 0.6,
+        ease: "power2.out",
+        stagger: 0.01,
+        delay: 0.3,
+      });
+
+      // Today pulse
+      gsap.to(".today-circle", {
+        scale: 1.1,
+        repeat: -1,
+        yoyo: true,
+        ease: "power1.inOut",
+        duration: 1.5,
+      });
+      gsap.from(".day-label", {
+        opacity: 0,
+        y: -15,
+        duration: 0.6,
+        ease: "power2.out",
+        stagger: 0.05,
+        delay: 0.2,
+      });
+      gsap.from(".week-row", {
+        opacity: 0,
+        y: 30,
+        duration: 0.6,
+        ease: "power2.out",
+        stagger: 0.07,
+        delay: 0.4,
+      });
+    }, calendarRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <div className="no-scrollbar calendar-container max-h-[70vh] sm:max-h-[80vh] overflow-y-scroll rounded-t-2xl border dark:border-white/10 border-slate-400 dark:bg-black/40 bg-white/10 pb-10 text-slate-800 ">
-      <div className="sticky -top-px z-50 w-full rounded-t-2xl dark:bg-black/40 bg-black/40 backdrop-blur-[60px] px-5 pt-7 sm:px-8 sm:pt-8 shadow-[0_0_60px_-30px_rgba(0,200,255,0.3)]">
+    <div
+      ref={calendarRef}
+      className="no-scrollbar calendar-container max-h-[70vh] sm:max-h-[80vh] overflow-y-scroll rounded-t-2xl border dark:border-white/10 border-slate-400 dark:bg-black/40 bg-white/10 pb-10 text-slate-800 "
+    >
+      <div className="calendar-header sticky -top-px z-50 w-full rounded-t-2xl dark:bg-black/40 bg-black/40 backdrop-blur-[60px] px-5 pt-7 sm:px-8 sm:pt-8 shadow-[0_0_60px_-30px_rgba(0,200,255,0.3)]">
         <div className="mb-4 flex w-full flex-wrap items-center justify-between gap-6">
           <div className="flex flex-wrap gap-2 sm:gap-3 ml-5 sm:ml-0">
             <Select
@@ -182,6 +237,7 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
             <div
               key={i}
               className={clsx(
+                "day-label",
                 "w-full border-b border-white/10",
                 "py-1.5 sm:py-2 md:py-2.5", // ✅ ปรับ padding ตามขนาดจอ
                 "text-[10px] sm:text-xs md:text-sm lg:text-base", // ✅ ปรับขนาดฟอนต์อัตโนมัติ
@@ -197,7 +253,10 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
       </div>
       <div className="w-full px-5 pt-4 sm:px-8 sm:pt-6">
         {calendarWeeks.map((week, weekIndex) => (
-          <div className="grid grid-cols-7 w-full" key={`week-${weekIndex}`}>
+          <div
+            className="grid grid-cols-7 w-full week-row"
+            key={`week-${weekIndex}`}
+          >
             {week.map(({ month, day }, dayIndex) => {
               const index = weekIndex * 7 + dayIndex;
               const matchEnergy = getMatchEnergy(day, month);
@@ -234,7 +293,7 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
                       "text-[10px] sm:text-sm md:text-[10px] lg:text-lg xl:text-xl",
                       // Color
                       isToday(day, month)
-                        ? "bg-cyan-400 text-white"
+                        ? "today-circle bg-cyan-400 text-white"
                         : "bg-[#444444] text-white",
                       month < 0 && "text-slate-400"
                     )}
@@ -246,7 +305,7 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
                   <div className="absolute top-2 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center w-full max-w-[80%]">
                     <div className="w-[70%] md:w-[50%] h-1 sm:h-1.5 lg:h-2 rounded-full bg-gray-600 overflow-hidden mb-1">
                       <div
-                        className={`h-full ${getBarColor(
+                        className={`energy-bar h-full ${getBarColor(
                           matchEnergy?.energyLevel ?? ""
                         )}`}
                         style={{ width: `${matchEnergy?.value ?? 0}%` }}

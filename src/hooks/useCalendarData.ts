@@ -3,9 +3,8 @@ import { useMemo } from "react";
 import { EnergyData } from "@/context/EnergyContext";
 
 export function useCalendarData(year: number, energyData: EnergyData[]) {
-  const today = new Date();
-
   return useMemo(() => {
+    const today = new Date();
     const daysInYear = (): { month: number; day: number; year: number }[] => {
       const daysInYear = [];
       const startDayOfWeek = new Date(year, 0, 1).getDay();

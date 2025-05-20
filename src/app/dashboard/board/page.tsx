@@ -75,7 +75,7 @@ export default function BoardPage() {
           />
         );
       }),
-    [tasks, session]
+    [tasks, handleAddTask, openForEdit, fetchTasks]
   );
 
   return (

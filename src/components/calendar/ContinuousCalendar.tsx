@@ -113,7 +113,7 @@ export const ContinuousCalendar: React.FC<ContinuousCalendarProps> = ({
     return () => observer.disconnect();
   }, []);
   useEffect(() => {
-    // Scroll to today's date after mount
+    const today = new Date();
     scrollToDay(today.getMonth(), today.getDate());
   }, []);
 

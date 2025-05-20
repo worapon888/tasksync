@@ -11,7 +11,7 @@ import { gsap } from "gsap";
 export default function EmotionalMeter() {
   const [range, setRange] = useState<"daily" | "weekly" | "monthly">("weekly");
 
-  const { tasks } = useBoardTasks(range);
+  const { tasks } = useBoardTasks();
   const flatTasks = Object.values(tasks)
     .flat()
     .map((task) => ({

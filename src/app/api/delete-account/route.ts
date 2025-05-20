@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma"; // ปรับ path ตามโปรเจกต์คุณ
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route"; // ปรับ path ถ้าจำเป็น
+import { authOptions } from "@/lib/authOptions";
 
 export async function DELETE() {
   const session = await getServerSession(authOptions);

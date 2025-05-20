@@ -1,12 +1,9 @@
-// hooks/useBoardTasks.ts
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { RawTask, Task, TasksByColumn } from "@/types/task";
 import { useSession } from "next-auth/react";
 import { useTaskMode } from "@/context/TaskModeContext";
 
-export default function useBoardTasks(
-  range: "daily" | "weekly" | "monthly" = "weekly"
-) {
+export default function useBoardTasks() {
   const { data: session } = useSession();
   const { mode } = useTaskMode();
   const [tasks, setTasks] = useState<TasksByColumn>({
@@ -16,7 +13,7 @@ export default function useBoardTasks(
     DONE: [],
   });
 
-  const fetchTasks = async () => {
+  const fetchTasks = useCallback(async () => {
     if (!session?.user || !mode) return;
 
     const res = await fetch(`/api/tasks?mode=${mode}`);
@@ -56,12 +53,13 @@ export default function useBoardTasks(
           grouped.TODO.push(normalizedTask);
       }
     });
-    setTasks({ ...grouped });
-  };
+
+    setTasks(grouped);
+  }, [session?.user, mode]);
 
   useEffect(() => {
     fetchTasks();
-  }, [session, mode, range]);
+  }, [fetchTasks]);
 
   return { tasks, fetchTasks };
 }

@@ -38,7 +38,7 @@ export default function DemoWrapper() {
     };
 
     fetchEnergy();
-  }, []);
+  }, [setEnergyData]);
 
   const onClickHandler = (day: number, month: number, year: number) => {
     const snackMessage = `📅 Clicked ${monthNames[month]} ${day}, ${year}`;

@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+##![Untitled-2](https://github.com/user-attachments/assets/7d793fdc-3c1a-4f78-872f-7a05bbc55b1e)
 
-## Getting Started
+🧠 TaskSync – When Task Management Meets Emotional Awareness
 
-First, run the development server:
+I used to feel that most to-do apps are... robotic.
+They help you plan, but they don’t reflect how you feel or how your energy flows.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+So I built TaskSync — a personal task manager that not only tracks your tasks,
+but helps you understand your emotional momentum throughout the week.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+🌗 It connects your actions → to energy → to reflection.
+📊 Each task contributes to a live Emotional Meter (moderate? burnout? high flow?)
+🌀 It’s designed to feel intuitive – no manual needed.
+🧩 Inspired by Apple-level simplicity, and will soon integrate with my next app: Sorola (a deeper life-path planning system).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+🔧 Tech stack:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Next.js 15
 
-## Learn More
+Tailwind CSS 4
 
-To learn more about Next.js, take a look at the following resources:
+GSAP Motion
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Prisma + PostgreSQL
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Cloudinary
 
-## Deploy on Vercel
+NextAuth (Google login)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Context API + Custom Hooks
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+👉 Try the live version here: https://tasksync-chi.vercel.app/
+🛠️ GitHub: https://github.com/worapon888/tasksync
+
+I’m building this as a solo dev to push UX, productivity, and emotion-aware tools forward.
+Would love feedback or collabs from anyone building in the human-centered tech space.
+
+TaskSync #ProductivityTools #UXDesign #NextJS #MentalClarity #EmotionalIntelligence #SoloDev
